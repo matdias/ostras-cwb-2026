@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ostras, Ceviche e Cerveja boa • Controle do Evento</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kaushan Script (título pincel) & Plus Jakarta Sans (texto limpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cobalt: '#1E2785',
+                        cobaltDark: '#141B63',
+                        mustard: '#F6B93B',
+                        mustardLight: '#FDE8B9',
+                        creamBg: '#FAF4E6',
+                        paper: '#FCF9F2',
+                        paperDark: '#F3EDE0'
+                    },
+                    fontFamily: {
+                        script: ['"Kaushan Script"', 'cursive'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Fundo com listras verticais onduladas inspiradas no banner */
+        body {
+            background-color: #FAF4E6;
+            background-image: url("data:image/svg+xml,%3Csvg width='120' height='200' viewBox='0 0 120 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='120' height='200' fill='%23FAF4E6'/%3E%3Cpath d='M15 0 Q 23 50, 15 100 T 15 200 L 45 200 Q 53 150, 45 100 T 45 0 Z' fill='%23F6B93B'/%3E%3Cpath d='M75 0 Q 83 50, 75 100 T 75 200 L 105 200 Q 113 150, 105 100 T 105 0 Z' fill='%23F6B93B'/%3E%3C/svg%3E");
+            background-size: 120px 200px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1E2785;
+            overflow-x: hidden;
+        }
+
+        /* Cartão principal estilo papel texturizado com respingos sutis e borda orgânica */
+        .art-paper-card {
+            background-color: #FCF9F2;
+            background-image: 
+                radial-gradient(rgba(30, 39, 133, 0.08) 1px, transparent 1px),
+                radial-gradient(rgba(30, 39, 133, 0.05) 1.5px, transparent 1.5px);
+            background-size: 28px 28px, 43px 43px;
+            background-position: 0 0, 14px 19px;
+            border: 4px solid #1E2785;
+            border-radius: 26px 22px 28px 24px / 24px 28px 22px 26px;
+            box-shadow: 0 14px 35px -10px rgba(30, 39, 133, 0.25), 0 0 0 6px #FCF9F2;
+        }
+
+        /* Efeito de traço orgânico nos botões e cards internos */
+        .hand-border {
+            border: 2px solid #1E2785;
+            border-radius: 16px 14px 18px 15px / 15px 17px 14px 16px;
+        }
+
+        .hand-border-sm {
+            border: 1.5px solid #1E2785;
+            border-radius: 12px 10px 13px 11px / 11px 13px 10px 12px;
+        }
+
+        /* Esconder scrollbar mantendo rolagem nas abas/filtros */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Animação suave para toast */
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        .toast-enter {
+            animation: slideUp 0.25s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-4 px-2.5 sm:py-8 sm:px-6 flex justify-center items-start">
+
+    <!-- Container Principal (Cartão do Banner) -->
+    <main class="art-paper-card w-full max-w-3xl p-4 sm:p-8 relative">
+        
+        <!-- CABEÇALHO DO EVENTO (Identidade Visual do Banner) -->
+        <header class="text-center relative pt-1 pb-5 border-b-2 border-dashed border-cobalt/20">
+            <!-- Título Caligráfico -->
+            <h1 class="font-script text-4xl sm:text-6xl text-cobalt leading-[1.08] tracking-normal drop-shadow-sm select-none">
+                Ostras,<br>
+                Ceviche e<br>
+                Cerveja boa
+            </h1>
+
+            <!-- Ilustração SVG Inline: 3 Ostras + Peixe Dourado + Asteriscos (fiel ao banner) -->
+            <div class="my-3 flex justify-center">
+                <svg class="w-48 sm:w-56 h-auto" viewBox="0 0 260 135" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Ilustração de Ostras e Peixe">
+                    <!-- Respingos decorativos sutis -->
+                    <circle cx="32" cy="25" r="1.5" fill="#1E2785" fill-opacity="0.25"/>
+                    <circle cx="225" cy="30" r="2" fill="#1E2785" fill-opacity="0.2"/>
+                    <circle cx="145" cy="18" r="1.5" fill="#1E2785" fill-opacity="0.25"/>
+                    <circle cx="60" cy="122" r="1.8" fill="#1E2785" fill-opacity="0.2"/>
+
+                    <!-- Ostra Superior (inclinada diagonalmente fiel ao banner) -->
+                    <g transform="translate(82, 24) rotate(-22)">
+                        <!-- Casca externa ondulada e irregular -->
+                        <path d="M8 23 C4 16, 10 7, 21 5 C31 3, 44 6, 54 11 C61 14, 68 18, 68 23 C68 28, 60 33, 49 36 C37 39, 23 39, 14 34 C9 31, 10 27, 8 23 Z" fill="#FCF9F2" stroke="#1E2785" stroke-width="2.5" stroke-linejoin="round"/>
+                        <!-- Borda lamelar secundária -->
+                        <path d="M13 22 C11 16, 17 10, 26 9 C36 8, 47 11, 55 15 C59 17, 61 20, 60 23 C59 26, 52 30, 42 32 C31 34, 21 33, 16 29 C13 27, 14 25, 13 22 Z" stroke="#1E2785" stroke-width="1.3" stroke-linecap="round"/>
+                        <!-- Camada interna da concha -->
+                        <path d="M19 22 C18 18, 24 14, 32 14 C40 14, 48 17, 50 21 C51 25, 44 28, 35 28 C26 28, 20 26, 19 22 Z" stroke="#1E2785" stroke-width="1.2" stroke-dasharray="14 2 8 2"/>
+                        <!-- Miolo / carne da ostra em mostarda -->
+                        <path d="M25 21 C26 18, 33 17, 40 19 C44 20, 46 22, 43 24 C39 26, 31 26, 26 24 C24 23, 24 22, 25 21 Z" fill="#F6B93B" stroke="#1E2785" stroke-width="1.2" stroke-linejoin="round"/>
+                        <!-- Dobradiça / umbo escuro na ponta direita -->
+                        <path d="M56 14 C62 17, 68 20, 68 23 C67 27, 61 31, 54 33 C57 28, 58 20, 56 14 Z" fill="#1E2785"/>
+                        <!-- Hachuras sutis de textura -->
+                        <path d="M18 13 L21 15 M28 7 L29 10 M41 8 L40 11 M23 35 L25 32 M38 36 L37 33" stroke="#1E2785" stroke-width="1.1" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Ostra Esquerda (inclinada para baixo/direita) -->
+                    <g transform="translate(26, 40) rotate(24)">
+                        <path d="M6 25 C3 17, 9 7, 21 5 C33 3, 48 5, 58 11 C65 15, 72 19, 71 25 C70 31, 61 36, 48 40 C35 43, 20 42, 12 36 C7 32, 8 29, 6 25 Z" fill="#FCF9F2" stroke="#1E2785" stroke-width="2.6" stroke-linejoin="round"/>
+                        <path d="M12 24 C10 18, 16 11, 26 10 C37 9, 49 12, 57 16 C61 19, 63 22, 62 25 C61 28, 53 33, 42 35 C30 37, 19 36, 14 31 C11 29, 13 26, 12 24 Z" stroke="#1E2785" stroke-width="1.35" stroke-linecap="round"/>
+                        <path d="M18 24 C17 19, 23 15, 32 15 C41 15, 49 18, 51 23 C52 27, 45 30, 35 30 C25 30, 19 28, 18 24 Z" stroke="#1E2785" stroke-width="1.2" stroke-dasharray="18 2 10 2"/>
+                        <path d="M24 23 C26 19, 34 18, 41 20 C45 21, 47 24, 44 26 C39 28, 30 28, 25 25 C23 24, 23 24, 24 23 Z" fill="#F6B93B" stroke="#1E2785" stroke-width="1.2" stroke-linejoin="round"/>
+                        <path d="M58 14 C65 17, 71 21, 71 25 C70 30, 63 34, 55 37 C59 31, 60 21, 58 14 Z" fill="#1E2785"/>
+                        <path d="M15 14 L18 16 M27 7 L28 10 M42 8 L41 11 M20 38 L22 35 M37 39 L36 36" stroke="#1E2785" stroke-width="1.1" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Ostra Inferior (inclinada diagonalmente para cima) -->
+                    <g transform="translate(82, 86) rotate(-32)">
+                        <path d="M7 24 C4 16, 11 7, 23 5 C35 3, 48 6, 58 11 C65 15, 71 19, 70 24 C69 29, 60 35, 47 38 C34 41, 20 40, 12 34 C8 31, 9 28, 7 24 Z" fill="#FCF9F2" stroke="#1E2785" stroke-width="2.5" stroke-linejoin="round"/>
+                        <path d="M13 23 C11 17, 17 11, 27 10 C38 9, 49 12, 57 16 C61 18, 62 21, 61 24 C60 27, 52 31, 42 33 C31 35, 20 34, 15 29 C12 27, 14 25, 13 23 Z" stroke="#1E2785" stroke-width="1.3" stroke-linecap="round"/>
+                        <path d="M19 23 C18 18, 24 14, 33 14 C41 14, 49 17, 51 22 C52 26, 44 29, 35 29 C25 29, 20 27, 19 23 Z" stroke="#1E2785" stroke-width="1.2" stroke-dasharray="15 2 9 2"/>
+                        <path d="M25 22 C27 18, 34 18, 41 20 C45 21, 47 23, 44 25 C39 27, 31 27, 26 24 C24 23, 24 23, 25 22 Z" fill="#F6B93B" stroke="#1E2785" stroke-width="1.2" stroke-linejoin="round"/>
+                        <path d="M57 14 C64 17, 70 20, 70 24 C69 29, 62 33, 55 35 C58 29, 59 20, 57 14 Z" fill="#1E2785"/>
+                        <path d="M16 13 L19 15 M29 7 L30 10 M43 8 L42 11 M21 36 L23 33 M38 37 L37 34" stroke="#1E2785" stroke-width="1.1" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Peixe Estilizado em Amarelo Mostarda/Dourado -->
+                    <g transform="translate(174, 14) rotate(12)">
+                        <!-- Barbatanas -->
+                        <path d="M22 38 L10 46 L21 52 Z" fill="#F6B93B" stroke="#D99B1E" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M36 44 L46 40 L40 52 Z" fill="#F6B93B" stroke="#D99B1E" stroke-width="1.5" stroke-linejoin="round"/>
+                        <!-- Corpo do Peixe -->
+                        <path d="M20 14 L12 2 L24 8 L34 1 L29 15 C37 32 42 58 38 85 C36 94 33 100 30 103 C26 99 22 92 20 82 C16 56 17 32 20 14 Z" fill="#FCF9F2" stroke="#E0A122" stroke-width="2.5" stroke-linejoin="round"/>
+                        <!-- Sombreamento Dourado Interno -->
+                        <path d="M22 18 C20 38 20 62 24 84 C26 90 28 95 30 98 C28 84 26 55 26 22 Z" fill="#F6B93B" fill-opacity="0.7"/>
+                        <path d="M28 32 L29 52 M32 40 L32 62" stroke="#D99B1E" stroke-width="1.5" stroke-linecap="round"/>
+                        <!-- Olho e Guelra -->
+                        <circle cx="30" cy="91" r="2.2" fill="#FCF9F2" stroke="#D99B1E" stroke-width="1.5"/>
+                        <path d="M24 82 Q30 85 36 81" stroke="#D99B1E" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Asterisco Dourado (Superior Esquerdo) -->
+                    <g transform="translate(68, 42)" stroke="#F6B93B" stroke-width="2.6" stroke-linecap="round">
+                        <line x1="0" y1="-11" x2="0" y2="11"/>
+                        <line x1="-11" y1="0" x2="11" y2="0"/>
+                        <line x1="-8" y1="-8" x2="8" y2="8"/>
+                        <line x1="8" y1="-8" x2="-8" y2="8"/>
+                    </g>
+
+                    <!-- Asterisco Azul Marinho (Inferior Direito) -->
+                    <g transform="translate(178, 88)" stroke="#1E2785" stroke-width="2.6" stroke-linecap="round">
+                        <line x1="0" y1="-11" x2="0" y2="11"/>
+                        <line x1="-11" y1="0" x2="11" y2="0"/>
+                        <line x1="-8" y1="-8" x2="8" y2="8"/>
+                        <line x1="8" y1="-8" x2="-8" y2="8"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Subtítulos do Banner -->
+            <p class="text-xs sm:text-sm font-extrabold tracking-[0.22em] uppercase text-cobalt">
+                BOTTLE SHARE &bull; 1500ML
+            </p>
+            <p class="text-[11px] sm:text-xs font-semibold tracking-[0.14em] uppercase text-cobalt/85 mt-1">
+                R. Camões, 476 - Hugo Lange &bull; 19/11 | 19.00
+            </p>
+        </header>
+
+        <!-- NAVEGAÇÃO POR ABAS (TABS) -->
+        <nav class="grid grid-cols-3 gap-1 sm:gap-2 my-4 bg-paperDark/80 p-1 sm:p-1.5 hand-border w-full box-border overflow-hidden" role="tablist" aria-label="Seções do Evento">
+            <button onclick="switchTab('ostras')" id="tab-btn-ostras" role="tab" aria-selected="true"
+                class="min-w-0 w-full py-2 px-1.5 sm:py-2.5 sm:px-3 text-[11px] sm:text-sm font-extrabold uppercase tracking-tight sm:tracking-wider rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 bg-cobalt text-paper shadow-sm leading-tight text-center">
+                <span class="flex items-center justify-center gap-1 truncate max-w-full">
+                    <span>🦪</span>
+                    <span class="truncate">Ostras</span>
+                </span>
+                <span id="badge-ostras-tab" class="text-[9px] sm:text-[10px] bg-mustard text-cobalt px-1.5 py-0.5 rounded-full font-black shrink-0">14 dz</span>
+            </button>
+
+            <button onclick="switchTab('bottleshare')" id="tab-btn-bottleshare" role="tab" aria-selected="false"
+                class="min-w-0 w-full py-2 px-1.5 sm:py-2.5 sm:px-3 text-[11px] sm:text-sm font-extrabold uppercase tracking-tight sm:tracking-wider rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-cobalt hover:bg-cobalt/10 leading-tight text-center">
+                <span class="flex items-center justify-center gap-1 truncate max-w-full">
+                    <span>🍾</span>
+                    <span class="truncate">Bottle Share</span>
+                </span>
+                <span id="badge-bottles-tab" class="text-[9px] sm:text-[10px] bg-cobalt/15 text-cobalt px-1.5 py-0.5 rounded-full font-bold shrink-0">0</span>
+            </button>
+
+            <button onclick="switchTab('info')" id="tab-btn-info" role="tab" aria-selected="false"
+                class="min-w-0 w-full py-2 px-1.5 sm:py-2.5 sm:px-3 text-[11px] sm:text-sm font-extrabold uppercase tracking-tight sm:tracking-wider rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-cobalt hover:bg-cobalt/10 leading-tight text-center">
+                <span class="flex items-center justify-center gap-1 truncate max-w-full">
+                    <span>💰</span>
+                    <span class="truncate">Info &amp; Rateio</span>
+                </span>
+            </button>
+        </nav>
+
+        <!-- =========================================================
+             ABA 1: CONTROLE DE OSTRAS
+             ========================================================= -->
+        <section id="panel-ostras" class="space-y-4">
+            
+            <!-- KPIs / Resumo Rápido -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div class="bg-white/90 p-3 hand-border-sm text-center">
+                    <span class="block text-[10px] font-bold uppercase tracking-wider text-cobalt/70">Total Ostras</span>
+                    <span id="kpi-unidades" class="text-2xl sm:text-3xl font-black text-cobalt leading-tight">168</span>
+                    <span class="block text-[11px] font-semibold text-cobalt/75">unidades frescas</span>
+                </div>
+
+                <div class="bg-mustardLight/60 p-3 hand-border-sm text-center">
+                    <span class="block text-[10px] font-bold uppercase tracking-wider text-cobalt/80">Total Dúzias</span>
+                    <span id="kpi-duzias" class="text-2xl sm:text-3xl font-black text-cobalt leading-tight">14</span>
+                    <span class="block text-[11px] font-semibold text-cobalt/80">dúzias fechadas</span>
+                </div>
+
+                <div class="bg-white/90 p-3 hand-border-sm text-center">
+                    <span class="block text-[10px] font-bold uppercase tracking-wider text-cobalt/70">Pediram Ostras</span>
+                    <span id="kpi-pediram" class="text-2xl sm:text-3xl font-black text-cobalt leading-tight">11</span>
+                    <span id="kpi-total-pessoas" class="block text-[11px] font-semibold text-cobalt/75">de 15 pessoas</span>
+                </div>
+
+                <div class="bg-white/90 p-2.5 hand-border-sm text-center flex flex-col justify-between">
+                    <label for="input-preco-duzia" class="block text-[10px] font-bold uppercase tracking-wider text-cobalt/70">
+                        Preço / Dúzia (R$)
+                    </label>
+                    <div class="flex items-center justify-center gap-1 my-0.5">
+                        <span class="text-xs font-extrabold text-cobalt">R$</span>
+                        <input type="number" id="input-preco-duzia" min="0" step="0.50" value="30"
+                            onchange="updatePricePerDozen(this.value)" oninput="updatePricePerDozen(this.value)"
+                            class="w-16 text-center font-black text-base sm:text-lg text-cobalt bg-paperDark border border-cobalt/40 rounded-lg py-0.5 focus:outline-none focus:border-cobalt">
+                    </div>
+                    <span id="kpi-custo-total" class="block text-[11px] font-extrabold text-emerald-700">Total: R$ 420,00</span>
+                </div>
+            </div>
+
+            <!-- Barra de Ação: Adicionar Pessoa + Busca -->
+            <div class="flex flex-col sm:flex-row gap-2">
+                <button onclick="openAddPersonModal()"
+                    class="bg-cobalt hover:bg-cobaltDark active:scale-[0.99] text-paper font-bold text-sm py-3 px-4 hand-border-sm shadow-sm flex items-center justify-center gap-2 transition cursor-pointer">
+                    <span class="text-lg leading-none">+</span>
+                    <span>Adicionar Pessoa</span>
+                </button>
+
+                <div class="relative flex-1">
+                    <input type="text" id="search-input" placeholder="Buscar participante..."
+                        oninput="renderOystersList()"
+                        class="w-full h-full py-2.5 pl-9 pr-8 bg-white/95 text-cobalt placeholder-cobalt/45 text-sm font-medium hand-border-sm focus:outline-none focus:ring-2 focus:ring-mustard">
+                    <svg class="w-4 h-4 text-cobalt/50 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-cobalt/60 hover:text-cobalt font-bold text-sm">✕</button>
+                </div>
+            </div>
+
+            <!-- Filtros Rápidos (Pills roláveis no mobile) -->
+            <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1" role="group" aria-label="Filtrar participantes">
+                <button onclick="setFilter('all')" id="filter-all"
+                    class="filter-pill px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-cobalt text-paper border border-cobalt transition">
+                    Todos (<span id="count-all">15</span>)
+                </button>
+                <button onclick="setFilter('with_order')" id="filter-with_order"
+                    class="filter-pill px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/40 hover:border-cobalt transition">
+                    🦪 Com pedido (<span id="count-with_order">11</span>)
+                </button>
+                <button onclick="setFilter('no_order')" id="filter-no_order"
+                    class="filter-pill px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/40 hover:border-cobalt transition">
+                    Sem pedido (<span id="count-no_order">4</span>)
+                </button>
+                <button onclick="setFilter('pending_pay')" id="filter-pending_pay"
+                    class="filter-pill px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/40 hover:border-cobalt transition">
+                    ⏳ Pendente (<span id="count-pending_pay">11</span>)
+                </button>
+                <button onclick="setFilter('paid')" id="filter-paid"
+                    class="filter-pill px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/40 hover:border-cobalt transition">
+                    ✅ Pagos (<span id="count-paid">0</span>)
+                </button>
+            </div>
+
+            <!-- Lista de Participantes -->
+            <div id="oysters-list" class="space-y-3">
+                <!-- Cards renderizados via JS -->
+            </div>
+
+            <!-- Barra de Ferramentas de Dados (Essencial para GitHub Pages + Celular) -->
+            <div class="mt-6 pt-4 border-t-2 border-dashed border-cobalt/20">
+                <p class="text-[11px] font-extrabold uppercase tracking-wider text-cobalt/70 mb-2.5 flex items-center gap-1.5">
+                    <span>📲</span> Compartilhar &amp; Backup (GitHub Pages)
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button onclick="copyWhatsAppSummary()"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-xl shadow-sm flex items-center justify-center gap-1.5 transition cursor-pointer">
+                        <span>📋</span> Resumo WhatsApp
+                    </button>
+
+                    <button onclick="copyShareableUrl()"
+                        class="bg-mustard hover:bg-amber-400 text-cobalt font-extrabold text-xs py-2.5 px-3 rounded-xl border border-cobalt shadow-sm flex items-center justify-center gap-1.5 transition cursor-pointer">
+                        <span>🔗</span> Link com Dados
+                    </button>
+
+                    <button onclick="openBackupModal()"
+                        class="bg-white hover:bg-paperDark text-cobalt font-bold text-xs py-2.5 px-3 rounded-xl border border-cobalt/50 flex items-center justify-center gap-1.5 transition cursor-pointer">
+                        <span>💾</span> Backup JSON
+                    </button>
+
+                    <button onclick="confirmResetData()"
+                        class="bg-white hover:bg-red-50 text-red-700 font-bold text-xs py-2.5 px-3 rounded-xl border border-red-300 flex items-center justify-center gap-1.5 transition cursor-pointer">
+                        <span>↺</span> Lista Original
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             ABA 2: BOTTLE SHARE (Estrutura Expansível)
+             ========================================================= -->
+        <section id="panel-bottleshare" class="hidden space-y-4">
+            <div class="bg-mustardLight/50 p-4 hand-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h2 class="font-extrabold text-base sm:text-lg text-cobalt flex items-center gap-2">
+                        <span>🍾</span> Line-up Bottle Share (1500ml &amp; Especiais)
+                    </h2>
+                    <p class="text-xs text-cobalt/80 mt-0.5">
+                        Cadastre as garrafas que a galera vai levar para compartilhar no evento.
+                    </p>
+                </div>
+                <button onclick="toggleBottleForm()"
+                    class="bg-cobalt hover:bg-cobaltDark text-paper font-bold text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-sm whitespace-nowrap transition cursor-pointer">
+                    + Cadastrar Garrafa
+                </button>
+            </div>
+
+            <!-- Formulário de Nova Garrafa (Oculto por padrão) -->
+            <form id="bottle-form" onsubmit="addBottle(event)" class="hidden bg-white p-4 hand-border space-y-3">
+                <div class="flex justify-between items-center border-b border-cobalt/15 pb-2">
+                    <h3 class="font-extrabold text-sm text-cobalt">Nova Garrafa no Line-up</h3>
+                    <button type="button" onclick="toggleBottleForm()" class="text-xs font-bold text-cobalt/60 hover:text-cobalt">Fechar ✕</button>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-cobalt/80 mb-1">Quem vai levar?</label>
+                        <input type="text" id="bottle-owner" required placeholder="Ex: Mateus"
+                            class="w-full p-2.5 text-sm bg-paper rounded-xl border border-cobalt/40 focus:outline-none focus:border-cobalt">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-cobalt/80 mb-1">Cerveja / Cervejaria</label>
+                        <input type="text" id="bottle-name" required placeholder="Ex: Cantillon Gueuze / Dogma..."
+                            class="w-full p-2.5 text-sm bg-paper rounded-xl border border-cobalt/40 focus:outline-none focus:border-cobalt">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-cobalt/80 mb-1">Estilo</label>
+                        <input type="text" id="bottle-style" placeholder="Ex: Wild Ale, RIS, Sour..."
+                            class="w-full p-2.5 text-sm bg-paper rounded-xl border border-cobalt/40 focus:outline-none focus:border-cobalt">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase text-cobalt/80 mb-1">Volume</label>
+                            <select id="bottle-volume" class="w-full p-2.5 text-sm bg-paper rounded-xl border border-cobalt/40 font-semibold">
+                                <option value="1500ml (Magnum)">1500ml (Magnum)</option>
+                                <option value="750ml">750ml</option>
+                                <option value="500ml">500ml</option>
+                                <option value="375ml">375ml</option>
+                                <option value="Lata 473ml">Lata 473ml</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase text-cobalt/80 mb-1">Status</label>
+                            <select id="bottle-status" class="w-full p-2.5 text-sm bg-paper rounded-xl border border-cobalt/40 font-semibold">
+                                <option value="Confirmada">Confirmada</option>
+                                <option value="Na geladeira">Na geladeira ❄️</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end pt-1">
+                    <button type="submit" class="bg-cobalt text-paper font-bold text-xs py-2.5 px-5 rounded-xl hover:bg-cobaltDark transition cursor-pointer">
+                        Salvar Garrafa
+                    </button>
+                </div>
+            </form>
+
+            <!-- Lista de Garrafas -->
+            <div id="bottles-list" class="space-y-2.5">
+                <!-- Renderizado via JS -->
+            </div>
+        </section>
+
+        <!-- =========================================================
+             ABA 3: INFO DO EVENTO & RATEIO CONSOLIDADO
+             ========================================================= -->
+        <section id="panel-info" class="hidden space-y-4">
+            <!-- Card de Local e Horário -->
+            <div class="bg-white p-4 hand-border space-y-3">
+                <h2 class="font-extrabold text-base text-cobalt flex items-center gap-2">
+                    <span>📍</span> Detalhes do Encontro
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                    <div class="bg-paper p-3 rounded-xl border border-cobalt/20">
+                        <span class="block text-[10px] font-extrabold uppercase tracking-wider text-cobalt/60">Data &amp; Horário</span>
+                        <span class="font-bold text-cobalt">19 de Novembro &bull; a partir das 19h00</span>
+                    </div>
+                    <div class="bg-paper p-3 rounded-xl border border-cobalt/20">
+                        <span class="block text-[10px] font-extrabold uppercase tracking-wider text-cobalt/60">Endereço</span>
+                        <span class="font-bold text-cobalt">R. Camões, 476 - Hugo Lange</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2 pt-1">
+                    <a href="https://maps.google.com/?q=R.+Camões,+476+-+Hugo+Lange,+Curitiba" target="_blank" rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 bg-cobalt text-paper text-xs font-bold py-2 px-3.5 rounded-xl hover:bg-cobaltDark transition">
+                        <span>🗺️</span> Abrir no Google Maps
+                    </a>
+                    <button onclick="copyEventInvite()"
+                        class="inline-flex items-center gap-1.5 bg-mustard text-cobalt text-xs font-extrabold py-2 px-3.5 rounded-xl border border-cobalt hover:bg-amber-400 transition cursor-pointer">
+                        <span>📤</span> Copiar Convite p/ WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <!-- Resumo Financeiro Consolidado -->
+            <div class="bg-white p-4 hand-border space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-cobalt/15 pb-2.5">
+                    <div>
+                        <h2 class="font-extrabold text-base text-cobalt flex items-center gap-2">
+                            <span>🧾</span> Fechamento Financeiro das Ostras
+                        </h2>
+                        <p class="text-xs text-cobalt/75">
+                            Baseado em <strong id="info-preco-dz">R$ 30,00</strong> por dúzia (<span id="info-preco-un">R$ 2,50</span> / unidade)
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-[10px] font-bold uppercase text-cobalt/60">Arrecadado / Total</span>
+                        <span id="info-arrecadado" class="text-sm font-black text-emerald-700">R$ 0,00 / R$ 420,00</span>
+                    </div>
+                </div>
+
+                <div id="finance-summary-list" class="divide-y divide-cobalt/10">
+                    <!-- Linhas renderizadas via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Rodapé discreto -->
+        <footer class="mt-6 pt-3 text-center text-[11px] font-semibold text-cobalt/60">
+            Ostras, Ceviche e Cerveja boa &bull; Controle Offline-First (salvo neste aparelho)
+        </footer>
+    </main>
+
+    <!-- =========================================================
+         MODAL: ADICIONAR / EDITAR PARTICIPANTE
+         ========================================================= -->
+    <div id="person-modal" class="fixed inset-0 bg-cobalt/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-paper w-full max-w-md p-5 hand-border shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-cobalt/15 pb-2.5">
+                <h3 id="modal-title" class="font-extrabold text-lg text-cobalt">Adicionar Participante</h3>
+                <button onclick="closePersonModal()" class="w-8 h-8 rounded-full bg-cobalt/10 text-cobalt font-bold hover:bg-cobalt/20">✕</button>
+            </div>
+
+            <form id="person-form" onsubmit="savePersonFromModal(event)" class="space-y-3.5">
+                <input type="hidden" id="edit-person-id">
+                
+                <div>
+                    <label for="person-name-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Nome da Pessoa</label>
+                    <input type="text" id="person-name-input" required placeholder="Ex: João da Silva"
+                        class="w-full p-3 text-sm font-semibold bg-white rounded-xl border-2 border-cobalt/40 focus:border-cobalt focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Quantidade de Ostras</label>
+                    <div class="grid grid-cols-3 gap-1.5 mb-2">
+                        <button type="button" onclick="setModalQty(0)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight">0 (Nenhuma)</button>
+                        <button type="button" onclick="setModalQty(6)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight">½ dz (6)</button>
+                        <button type="button" onclick="setModalQty(12)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight">1 dz (12)</button>
+                        <button type="button" onclick="setModalQty(18)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight">1½ dz (18)</button>
+                        <button type="button" onclick="setModalQty(24)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight">2 dz (24)</button>
+                        <button type="button" onclick="setModalQty(36)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight">3 dz (36)</button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="person-qty-input" min="0" step="1" value="12" required
+                            class="w-full p-2.5 text-base font-black text-center bg-white rounded-xl border-2 border-cobalt/40 focus:border-cobalt focus:outline-none">
+                        <span class="text-xs font-bold text-cobalt/70 whitespace-nowrap">unidades</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="person-note-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Observação (opcional)</label>
+                    <input type="text" id="person-note-input" placeholder="Ex: Vai levar limão, chega às 20h..."
+                        class="w-full p-2.5 text-sm bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                </div>
+
+                <label class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-cobalt/30 cursor-pointer">
+                    <input type="checkbox" id="person-paid-input" class="w-5 h-5 accent-cobalt rounded">
+                    <span class="text-sm font-bold text-cobalt">Pedido já está pago</span>
+                </label>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closePersonModal()"
+                        class="flex-1 py-2.5 px-4 rounded-xl border border-cobalt/40 text-cobalt font-bold text-sm hover:bg-cobalt/5">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 px-4 rounded-xl bg-cobalt text-paper font-bold text-sm hover:bg-cobaltDark shadow-sm">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         MODAL: BACKUP JSON / IMPORTAR / RESTAURAR
+         ========================================================= -->
+    <div id="backup-modal" class="fixed inset-0 bg-cobalt/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-paper w-full max-w-md p-5 hand-border shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-cobalt/15 pb-2.5">
+                <h3 class="font-extrabold text-lg text-cobalt">Backup &amp; Sincronização</h3>
+                <button onclick="closeBackupModal()" class="w-8 h-8 rounded-full bg-cobalt/10 text-cobalt font-bold">✕</button>
+            </div>
+            
+            <p class="text-xs text-cobalt/80 leading-relaxed">
+                Copie o código abaixo para guardar uma cópia de segurança ou cole um código recebido para atualizar sua lista:
+            </p>
+
+            <textarea id="json-backup-area" rows="5"
+                class="w-full p-2.5 text-xs font-mono bg-white rounded-xl border border-cobalt/40 focus:outline-none focus:border-cobalt"></textarea>
+
+            <div class="flex flex-wrap gap-2">
+                <button onclick="copyJsonBackup()" class="flex-1 bg-cobalt text-paper font-bold text-xs py-2.5 px-3 rounded-xl">
+                    📋 Copiar Código
+                </button>
+                <button onclick="importJsonBackup()" class="flex-1 bg-mustard text-cobalt font-extrabold text-xs py-2.5 px-3 rounded-xl border border-cobalt">
+                    📥 Carregar Código Colado
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         MODAL DE CONFIRMAÇÃO CUSTOMIZADO (Sem alert/confirm nativo)
+         ========================================================= -->
+    <div id="confirm-modal" class="fixed inset-0 bg-cobalt/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="bg-paper w-full max-w-sm p-5 hand-border shadow-2xl space-y-4 text-center">
+            <h3 id="confirm-title" class="font-extrabold text-lg text-cobalt">Confirmar ação</h3>
+            <p id="confirm-message" class="text-sm text-cobalt/85">Tem certeza?</p>
+            <div class="flex gap-2 pt-1">
+                <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl border border-cobalt/40 font-bold text-sm text-cobalt">
+                    Cancelar
+                </button>
+                <button id="confirm-yes-btn" class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-bold text-sm hover:bg-red-700">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de Notificação -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-cobalt text-paper px-4 py-2.5 rounded-full shadow-xl text-xs sm:text-sm font-bold hidden items-center gap-2 z-50 border-2 border-mustard whitespace-nowrap">
+        <span id="toast-icon">✅</span>
+        <span id="toast-msg">Ação concluída!</span>
+    </div>
+
+    <!-- =========================================================
+         JAVASCRIPT: ESTADO, DADOS DA ENQUETE E INTERATIVIDADE
+         ========================================================= -->
+    <script>
+        // Dados exatos extraídos da enquete do WhatsApp
+        const INITIAL_DATA = {
+            pricePerDozen: 30,
+            people: [
+                // Uma dúzia (12) - 5 votos
+                { id: 'p1', name: 'Jessica Dal Magro Cervejeira', qty: 12, paid: false, note: '' },
+                { id: 'p2', name: 'Lenir Filho AcervA PR', qty: 12, paid: false, note: '' },
+                { id: 'p3', name: 'Edison Sanfelice', qty: 12, paid: false, note: '' },
+                { id: 'p4', name: 'Gustavo Julio Soria Cuesta', qty: 12, paid: false, note: '' },
+                { id: 'p5', name: 'Fer Curitiba BJCP', qty: 12, paid: false, note: '' },
+                // Três dúzias (36) - 2 votos
+                { id: 'p6', name: 'Junka André Junqueira Morada', qty: 36, paid: false, note: '' },
+                { id: 'p7', name: 'Hugo Zeni Neto', qty: 36, paid: false, note: '' },
+                // Uma dúzia e meia (18) - 1 voto ("Você")
+                { id: 'p8', name: 'Mateus', qty: 18, paid: false, note: 'Organizador' },
+                // Meia dúzia (6) - 3 votos
+                { id: 'p9', name: 'Oscar Freitas Jr', qty: 6, paid: false, note: '' },
+                { id: 'p10', name: 'Adriana Acerva', qty: 6, paid: false, note: '' },
+                { id: 'p11', name: 'Dionisio Mineiro Concerva', qty: 6, paid: false, note: '' },
+                // Nenhuma (0) - 4 votos
+                { id: 'p12', name: 'Marcelo Arruda Acerva', qty: 0, paid: false, note: '' },
+                { id: 'p13', name: 'Luiz Leal', qty: 0, paid: false, note: '' },
+                { id: 'p14', name: 'Marcos O Jr', qty: 0, paid: false, note: '' },
+                { id: 'p15', name: 'Edmilson Kleinert', qty: 0, paid: false, note: '' }
+            ],
+            bottles: [
+                {
+                    id: 'b1',
+                    owner: 'Mateus',
+                    name: 'Garrafa Especial 1500ml (A definir)',
+                    style: 'Wild Ale / Sour',
+                    volume: '1500ml (Magnum)',
+                    status: 'Confirmada'
+                }
+            ]
+        };
+
+        const STORAGE_KEY = 'ostras_ceviche_cerveja_v1';
+        let appState = null;
+        let currentFilter = 'all';
+        let confirmCallback = null;
+
+        // Inicialização
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            document.getElementById('input-preco-duzia').value = appState.pricePerDozen;
+            renderAll();
+        });
+
+        // Carrega estado da URL hash (se compartilhado), do localStorage ou usa o inicial
+        function loadState() {
+            try {
+                // 1. Verifica se veio estado codificado na URL (#data=...)
+                const hash = window.location.hash;
+                if (hash && hash.startsWith('#data=')) {
+                    const encoded = hash.replace('#data=', '');
+                    const decodedJson = decodeURIComponent(escape(atob(encoded)));
+                    const parsed = JSON.parse(decodedJson);
+                    if (parsed && Array.isArray(parsed.people)) {
+                        appState = {
+                            pricePerDozen: Number(parsed.pricePerDozen) || 30,
+                            people: parsed.people,
+                            bottles: Array.isArray(parsed.bottles) ? parsed.bottles : []
+                        };
+                        saveState(false);
+                        // Limpa o hash para não ficar gigante na barra
+                        history.replaceState(null, '', window.location.pathname + window.location.search);
+                        showToast('Dados carregados do link compartilhado!', '🔗');
+                        return;
+                    }
+                }
+
+                // 2. Verifica localStorage
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    appState = JSON.parse(saved);
+                    if (!appState.bottles) appState.bottles = [];
+                    return;
+                }
+            } catch (e) {
+                console.error('Erro ao carregar dados salvos:', e);
+            }
+
+            // 3. Fallback para os dados iniciais da enquete
+            appState = JSON.parse(JSON.stringify(INITIAL_DATA));
+            saveState(false);
+        }
+
+        // Salva no localStorage e re-renderiza se necessário
+        function saveState(shouldRender = true) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {
+                console.error('Erro ao salvar no localStorage:', e);
+            }
+            if (shouldRender) {
+                renderAll();
+            }
+        }
+
+        // Formatação de moeda e dúzias (padronizado com frações legíveis sem .5 ou ,5)
+        function formatCurrency(val) {
+            return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function formatFractionFromUnits(units) {
+            const whole = Math.floor(units / 12);
+            const rem = units % 12;
+
+            if (rem === 0) return `${whole}`;
+
+            const fractionMap = {
+                6: '½',
+                3: '¼',
+                9: '¾',
+                4: '⅓',
+                8: '⅔'
+            };
+
+            const frac = fractionMap[rem];
+            if (frac) {
+                return whole > 0 ? `${whole}${frac}` : frac;
+            }
+            return whole > 0 ? `${whole} ${rem}/12` : `${rem}/12`;
+        }
+
+        function formatDozensLabel(qty) {
+            if (qty === 0) return 'Nenhuma';
+            const fracStr = formatFractionFromUnits(qty);
+            const plural = qty > 12 && (qty % 12 === 0) ? 'dúzias' : 'dúzia';
+            return `${fracStr} ${plural} (${qty} un)`;
+        }
+
+        function formatDozensShort(totalUnits) {
+            return formatFractionFromUnits(totalUnits);
+        }
+
+        // Troca de Abas
+        function switchTab(tabName) {
+            const tabs = ['ostras', 'bottleshare', 'info'];
+            tabs.forEach(t => {
+                const panel = document.getElementById(`panel-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tabName) {
+                    panel.classList.remove('hidden');
+                    btn.classList.add('bg-cobalt', 'text-paper', 'shadow-sm');
+                    btn.classList.remove('text-cobalt', 'hover:bg-cobalt/10');
+                    btn.setAttribute('aria-selected', 'true');
+                } else {
+                    panel.classList.add('hidden');
+                    btn.classList.remove('bg-cobalt', 'text-paper', 'shadow-sm');
+                    btn.classList.add('text-cobalt', 'hover:bg-cobalt/10');
+                    btn.setAttribute('aria-selected', 'false');
+                }
+            });
+
+            if (tabName === 'info') renderFinanceSummary();
+        }
+
+        // Renderização Global
+        function renderAll() {
+            updateKPIs();
+            renderOystersList();
+            renderBottlesList();
+            renderFinanceSummary();
+        }
+
+        function updateKPIs() {
+            const totalUnits = appState.people.reduce((acc, p) => acc + (Number(p.qty) || 0), 0);
+            const totalDozens = totalUnits / 12;
+            const peopleWithOrder = appState.people.filter(p => p.qty > 0).length;
+            const totalCost = totalDozens * (Number(appState.pricePerDozen) || 0);
+
+            document.getElementById('kpi-unidades').textContent = totalUnits;
+            document.getElementById('kpi-duzias').textContent = formatDozensShort(totalUnits);
+            document.getElementById('kpi-pediram').textContent = peopleWithOrder;
+            document.getElementById('kpi-total-pessoas').textContent = `de ${appState.people.length} pessoas`;
+            document.getElementById('kpi-custo-total').textContent = `Total: ${formatCurrency(totalCost)}`;
+
+            // Badges das abas
+            document.getElementById('badge-ostras-tab').textContent = `${formatDozensShort(totalUnits)} dz`;
+            document.getElementById('badge-bottles-tab').textContent = appState.bottles.length;
+
+            // Contadores dos filtros
+            const noOrder = appState.people.filter(p => p.qty === 0).length;
+            const paidCount = appState.people.filter(p => p.qty > 0 && p.paid).length;
+            const pendingCount = appState.people.filter(p => p.qty > 0 && !p.paid).length;
+
+            document.getElementById('count-all').textContent = appState.people.length;
+            document.getElementById('count-with_order').textContent = peopleWithOrder;
+            document.getElementById('count-no_order').textContent = noOrder;
+            document.getElementById('count-pending_pay').textContent = pendingCount;
+            document.getElementById('count-paid').textContent = paidCount;
+        }
+
+        function updatePricePerDozen(val) {
+            const num = parseFloat(val);
+            appState.pricePerDozen = isNaN(num) || num < 0 ? 0 : num;
+            saveState(true);
+        }
+
+        // Filtros e Busca
+        function setFilter(filterKey) {
+            currentFilter = filterKey;
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.classList.remove('bg-cobalt', 'text-paper', 'border-cobalt');
+                btn.classList.add('bg-white', 'text-cobalt', 'border-cobalt/40');
+            });
+            const activeBtn = document.getElementById(`filter-${filterKey}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-white', 'text-cobalt', 'border-cobalt/40');
+                activeBtn.classList.add('bg-cobalt', 'text-paper', 'border-cobalt');
+            }
+            renderOystersList();
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            renderOystersList();
+        }
+
+        // Renderiza os cards de participantes na aba Ostras
+        function renderOystersList() {
+            const container = document.getElementById('oysters-list');
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const clearBtn = document.getElementById('clear-search-btn');
+            clearBtn.classList.toggle('hidden', query.length === 0);
+
+            const pricePerUnit = (Number(appState.pricePerDozen) || 0) / 12;
+
+            let filtered = appState.people.filter(p => {
+                const matchesQuery = p.name.toLowerCase().includes(query) || (p.note && p.note.toLowerCase().includes(query));
+                if (!matchesQuery) return false;
+
+                if (currentFilter === 'with_order') return p.qty > 0;
+                if (currentFilter === 'no_order') return p.qty === 0;
+                if (currentFilter === 'paid') return p.qty > 0 && p.paid;
+                if (currentFilter === 'pending_pay') return p.qty > 0 && !p.paid;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white/80 p-6 hand-border-sm text-center text-cobalt/70">
+                        <p class="font-bold text-sm">Nenhum participante encontrado neste filtro.</p>
+                        <button onclick="setFilter('all'); clearSearch();" class="mt-2 text-xs font-extrabold underline text-cobalt">Mostrar todos</button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(person => {
+                const personCost = person.qty * pricePerUnit;
+                const hasOrder = person.qty > 0;
+                const cardBg = !hasOrder ? 'bg-white/65 opacity-85' : (person.paid ? 'bg-emerald-50/90' : 'bg-white/95');
+
+                return `
+                <div class="${cardBg} p-3.5 hand-border-sm transition-all shadow-2xs">
+                    <!-- Linha Superior: Nome, Valor e Ações -->
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <h3 class="font-extrabold text-sm sm:text-base text-cobalt truncate">${escapeHtml(person.name)}</h3>
+                                ${person.note ? `<span class="text-[10px] font-bold bg-mustardLight text-cobalt px-2 py-0.5 rounded-full">${escapeHtml(person.note)}</span>` : ''}
+                            </div>
+                            <div class="flex items-center gap-2 mt-0.5 text-xs">
+                                <span class="font-bold ${hasOrder ? 'text-cobalt' : 'text-cobalt/50'}">
+                                    ${hasOrder ? `🦪 ${formatDozensLabel(person.qty)}` : 'Sem pedido de ostras'}
+                                </span>
+                                ${hasOrder ? `<span class="text-cobalt/30">&bull;</span><span class="font-extrabold text-emerald-700">${formatCurrency(personCost)}</span>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Botões Editar / Excluir -->
+                        <div class="flex items-center gap-1 shrink-0">
+                            <button onclick="openEditPersonModal('${person.id}')" title="Editar participante"
+                                class="p-2 rounded-lg text-cobalt/70 hover:text-cobalt hover:bg-cobalt/10 transition cursor-pointer" aria-label="Editar ${escapeHtml(person.name)}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                </svg>
+                            </button>
+                            <button onclick="askDeletePerson('${person.id}')" title="Remover"
+                                class="p-2 rounded-lg text-red-500/70 hover:text-red-700 hover:bg-red-50 transition cursor-pointer" aria-label="Remover ${escapeHtml(person.name)}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Controles Rápidos de Quantidade + Checkbox Pago -->
+                    <div class="mt-3 pt-2.5 border-t border-cobalt/10 flex flex-wrap items-center justify-between gap-2">
+                        <!-- Atalhos de Dúzias e -1 / +1 -->
+                        <div class="flex items-center gap-1 flex-wrap">
+                            <button onclick="changePersonQty('${person.id}', -1)"
+                                class="w-7 h-7 rounded-lg bg-paperDark hover:bg-cobalt hover:text-paper font-black text-sm text-cobalt border border-cobalt/30 transition cursor-pointer" title="Menos 1 ostra">-</button>
+                            
+                            <span class="w-8 text-center font-black text-sm text-cobalt">${person.qty}</span>
+                            
+                            <button onclick="changePersonQty('${person.id}', 1)"
+                                class="w-7 h-7 rounded-lg bg-paperDark hover:bg-cobalt hover:text-paper font-black text-sm text-cobalt border border-cobalt/30 transition cursor-pointer" title="Mais 1 ostra">+</button>
+
+                            <span class="mx-0.5 text-cobalt/20">|</span>
+
+                            ${[0, 6, 12, 18, 24, 36].map(preset => {
+                                const label = preset === 0 ? '0' : `${formatFractionFromUnits(preset)} dz`;
+                                const isSelected = person.qty === preset;
+                                return `<button onclick="setPersonQty('${person.id}', ${preset})"
+                                    class="px-2 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isSelected ? 'bg-cobalt text-paper' : 'bg-paper hover:bg-mustardLight text-cobalt border border-cobalt/25'}">
+                                    ${label}
+                                </button>`;
+                            }).join('')}
+                        </div>
+
+                        <!-- Status Pago -->
+                        ${hasOrder ? `
+                        <button onclick="togglePaid('${person.id}')"
+                            class="px-2.5 py-1 rounded-lg text-xs font-extrabold flex items-center gap-1.5 transition cursor-pointer ${person.paid ? 'bg-emerald-600 text-white shadow-2xs' : 'bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200'}">
+                            <span>${person.paid ? '✅ Pago' : '⏳ Pendente'}</span>
+                        </button>
+                        ` : ''}
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // Manipulação de Quantidades e Status
+        function setPersonQty(id, newQty) {
+            const p = appState.people.find(item => item.id === id);
+            if (!p) return;
+            p.qty = Math.max(0, parseInt(newQty, 10) || 0);
+            if (p.qty === 0) p.paid = false;
+            saveState(true);
+        }
+
+        function changePersonQty(id, delta) {
+            const p = appState.people.find(item => item.id === id);
+            if (!p) return;
+            p.qty = Math.max(0, (p.qty || 0) + delta);
+            if (p.qty === 0) p.paid = false;
+            saveState(true);
+        }
+
+        function togglePaid(id) {
+            const p = appState.people.find(item => item.id === id);
+            if (!p) return;
+            p.paid = !p.paid;
+            saveState(true);
+            showToast(p.paid ? `Pagamento de ${p.name} confirmado!` : `Marcado como pendente`, p.paid ? '✅' : '⏳');
+        }
+
+        // Modal Adicionar / Editar Pessoa
+        function openAddPersonModal() {
+            document.getElementById('modal-title').textContent = 'Adicionar Participante';
+            document.getElementById('edit-person-id').value = '';
+            document.getElementById('person-name-input').value = '';
+            document.getElementById('person-qty-input').value = 12;
+            document.getElementById('person-note-input').value = '';
+            document.getElementById('person-paid-input').checked = false;
+
+            const modal = document.getElementById('person-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => document.getElementById('person-name-input').focus(), 50);
+        }
+
+        function openEditPersonModal(id) {
+            const p = appState.people.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('modal-title').textContent = 'Editar Participante';
+            document.getElementById('edit-person-id').value = p.id;
+            document.getElementById('person-name-input').value = p.name;
+            document.getElementById('person-qty-input').value = p.qty;
+            document.getElementById('person-note-input').value = p.note || '';
+            document.getElementById('person-paid-input').checked = !!p.paid;
+
+            const modal = document.getElementById('person-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePersonModal() {
+            const modal = document.getElementById('person-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function setModalQty(qty) {
+            document.getElementById('person-qty-input').value = qty;
+        }
+
+        function savePersonFromModal(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-person-id').value;
+            const name = document.getElementById('person-name-input').value.trim();
+            const qty = Math.max(0, parseInt(document.getElementById('person-qty-input').value, 10) || 0);
+            const note = document.getElementById('person-note-input').value.trim();
+            const paid = qty > 0 ? document.getElementById('person-paid-input').checked : false;
+
+            if (!name) return;
+
+            if (id) {
+                const p = appState.people.find(item => item.id === id);
+                if (p) {
+                    p.name = name;
+                    p.qty = qty;
+                    p.note = note;
+                    p.paid = paid;
+                }
+                showToast('Dados atualizados!', '✏️');
+            } else {
+                appState.people.unshift({
+                    id: 'p_' + Date.now(),
+                    name,
+                    qty,
+                    note,
+                    paid
+                });
+                showToast(`${name} adicionado(a)!`, '🦪');
+            }
+
+            closePersonModal();
+            saveState(true);
+        }
+
+        function askDeletePerson(id) {
+            const p = appState.people.find(item => item.id === id);
+            if (!p) return;
+            openConfirmModal(
+                'Remover participante?',
+                `Deseja remover "${p.name}" da lista do evento?`,
+                () => {
+                    appState.people = appState.people.filter(item => item.id !== id);
+                    saveState(true);
+                    showToast('Participante removido.', '🗑️');
+                }
+            );
+        }
+
+        // =========================================================
+        // ABA 2: BOTTLE SHARE
+        // =========================================================
+        function toggleBottleForm() {
+            const form = document.getElementById('bottle-form');
+            form.classList.toggle('hidden');
+        }
+
+        function addBottle(e) {
+            e.preventDefault();
+            const owner = document.getElementById('bottle-owner').value.trim();
+            const name = document.getElementById('bottle-name').value.trim();
+            const style = document.getElementById('bottle-style').value.trim() || 'A definir';
+            const volume = document.getElementById('bottle-volume').value;
+            const status = document.getElementById('bottle-status').value;
+
+            if (!owner || !name) return;
+
+            appState.bottles.push({
+                id: 'b_' + Date.now(),
+                owner,
+                name,
+                style,
+                volume,
+                status
+            });
+
+            document.getElementById('bottle-form').reset();
+            toggleBottleForm();
+            saveState(true);
+            showToast('Garrafa adicionada ao Bottle Share!', '🍾');
+        }
+
+        function toggleBottleStatus(id) {
+            const b = appState.bottles.find(item => item.id === id);
+            if (!b) return;
+            b.status = b.status === 'Confirmada' ? 'Na geladeira' : 'Confirmada';
+            saveState(true);
+        }
+
+        function deleteBottle(id) {
+            appState.bottles = appState.bottles.filter(item => item.id !== id);
+            saveState(true);
+            showToast('Garrafa removida.', '🗑️');
+        }
+
+        function renderBottlesList() {
+            const container = document.getElementById('bottles-list');
+            if (appState.bottles.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white/80 p-6 hand-border-sm text-center text-cobalt/70">
+                        <p class="font-bold text-sm">Nenhuma garrafa cadastrada ainda.</p>
+                        <p class="text-xs mt-1">Clique em "+ Cadastrar Garrafa" para montar o line-up!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = appState.bottles.map(b => `
+                <div class="bg-white p-3.5 hand-border-sm flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-[11px] font-black uppercase bg-mustard text-cobalt px-2 py-0.5 rounded-md">
+                                ${escapeHtml(b.volume)}
+                            </span>
+                            <h4 class="font-extrabold text-sm text-cobalt truncate">${escapeHtml(b.name)}</h4>
+                        </div>
+                        <p class="text-xs text-cobalt/75 mt-1">
+                            Estilo: <strong>${escapeHtml(b.style)}</strong> &bull; Leva: <strong>${escapeHtml(b.owner)}</strong>
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button onclick="toggleBottleStatus('${b.id}')"
+                            class="px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold cursor-pointer ${b.status === 'Na geladeira' ? 'bg-sky-100 text-sky-900 border border-sky-300' : 'bg-paperDark text-cobalt border border-cobalt/30'}">
+                            ${b.status === 'Na geladeira' ? '❄️ Gelando' : '✓ Confirmada'}
+                        </button>
+                        <button onclick="deleteBottle('${b.id}')" class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg cursor-pointer" title="Excluir garrafa">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // =========================================================
+        // ABA 3: RATEIO CONSOLIDADO & COBRANÇA INDIVIDUAL
+        // =========================================================
+        function renderFinanceSummary() {
+            const list = document.getElementById('finance-summary-list');
+            const priceDz = Number(appState.pricePerDozen) || 0;
+            const priceUn = priceDz / 12;
+
+            document.getElementById('info-preco-dz').textContent = formatCurrency(priceDz);
+            document.getElementById('info-preco-un').textContent = formatCurrency(priceUn);
+
+            const buyers = appState.people.filter(p => p.qty > 0).sort((a, b) => b.qty - a.qty);
+            const totalValue = buyers.reduce((sum, p) => sum + p.qty * priceUn, 0);
+            const paidValue = buyers.filter(p => p.paid).reduce((sum, p) => sum + p.qty * priceUn, 0);
+
+            document.getElementById('info-arrecadado').textContent = `${formatCurrency(paidValue)} / ${formatCurrency(totalValue)}`;
+
+            if (buyers.length === 0) {
+                list.innerHTML = `<p class="py-4 text-center text-xs text-cobalt/70">Nenhum pedido de ostras registrado.</p>`;
+                return;
+            }
+
+            list.innerHTML = buyers.map(p => {
+                const val = p.qty * priceUn;
+                return `
+                    <div class="py-2.5 flex items-center justify-between gap-2">
+                        <div>
+                            <p class="font-bold text-sm text-cobalt">${escapeHtml(p.name)}</p>
+                            <p class="text-xs text-cobalt/70">${formatDozensLabel(p.qty)} &bull; <strong class="text-cobalt">${formatCurrency(val)}</strong></p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[11px] font-extrabold px-2 py-0.5 rounded-full ${p.paid ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                                ${p.paid ? 'Pago' : 'Pendente'}
+                            </span>
+                            <button onclick="copyIndividualCharge('${p.id}')"
+                                class="text-xs font-bold bg-paperDark hover:bg-mustardLight text-cobalt px-2.5 py-1.5 rounded-lg border border-cobalt/30 cursor-pointer" title="Copiar mensagem de cobrança">
+                                📋 Cobrar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function copyIndividualCharge(id) {
+            const p = appState.people.find(item => item.id === id);
+            if (!p) return;
+            const val = p.qty * ((Number(appState.pricePerDozen) || 0) / 12);
+            const text = `Fala ${p.name.split(' ')[0]}! Sobre as ostras do evento *Ostras, Ceviche e Cerveja boa* (19/11): seu pedido ficou em *${formatDozensLabel(p.qty)}* = *${formatCurrency(val)}*. Valeu! 🦪🍻`;
+            copyToClipboard(text, `Cobrança de ${p.name.split(' ')[0]} copiada!`);
+        }
+
+        function copyEventInvite() {
+            const text = `🦪🐟🍻 *OSTRAS, CEVICHE E CERVEJA BOA*\n🍾 *BOTTLE SHARE • 1500ML*\n\n📅 Data: 19/11 às 19h00\n📍 Local: R. Camões, 476 - Hugo Lange\n\nBora confirmar as ostras e a garrafa do bottle share!`;
+            copyToClipboard(text, 'Convite copiado para o WhatsApp!');
+        }
+
+        // =========================================================
+        // COMPARTILHAMENTO & EXPORTAÇÃO (WHATSAPP / URL / JSON)
+        // =========================================================
+        function copyWhatsAppSummary() {
+            const totalUnits = appState.people.reduce((acc, p) => acc + p.qty, 0);
+            const priceUn = (Number(appState.pricePerDozen) || 0) / 12;
+            const totalCost = totalUnits * priceUn;
+
+            const activeBuyers = appState.people.filter(p => p.qty > 0).sort((a, b) => b.qty - a.qty);
+
+            let lines = [
+                `🦪 *PEDIDOS DE OSTRAS - 19/11* 🍻`,
+                `📍 R. Camões, 476 - Hugo Lange (19h00)`,
+                `━━━━━━━━━━━━━━━━━━━━`,
+                `📦 *Total:* ${formatDozensShort(totalUnits)} dúzias (${totalUnits} ostras)`,
+                `💰 *Valor/dz:* ${formatCurrency(appState.pricePerDozen)} | *Total:* ${formatCurrency(totalCost)}`,
+                ``
+            ];
+
+            activeBuyers.forEach(p => {
+                const statusIcon = p.paid ? '✅' : '⏳';
+                const val = formatCurrency(p.qty * priceUn);
+                lines.push(`${statusIcon} *${p.name}*: ${formatDozensLabel(p.qty)} (${val})`);
+            });
+
+            if (appState.bottles.length > 0) {
+                lines.push(``, `🍾 *BOTTLE SHARE:*`);
+                appState.bottles.forEach(b => {
+                    lines.push(`• ${b.volume} - ${b.name} (${b.owner})`);
+                });
+            }
+
+            copyToClipboard(lines.join('\n'), 'Resumo formatado copiado!');
+        }
+
+        function copyShareableUrl() {
+            try {
+                const jsonStr = JSON.stringify(appState);
+                const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+                const baseUrl = window.location.href.split('#')[0];
+                const shareUrl = `${baseUrl}#data=${encoded}`;
+                copyToClipboard(shareUrl, 'Link com dados atualizado copiado!');
+            } catch (e) {
+                showToast('Erro ao gerar link compartilhável.', '⚠️');
+            }
+        }
+
+        function openBackupModal() {
+            document.getElementById('json-backup-area').value = JSON.stringify(appState, null, 2);
+            const modal = document.getElementById('backup-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeBackupModal() {
+            const modal = document.getElementById('backup-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function copyJsonBackup() {
+            const text = document.getElementById('json-backup-area').value;
+            copyToClipboard(text, 'Código JSON copiado!');
+        }
+
+        function importJsonBackup() {
+            try {
+                const raw = document.getElementById('json-backup-area').value.trim();
+                const parsed = JSON.parse(raw);
+                if (!parsed || !Array.isArray(parsed.people)) {
+                    throw new Error('Formato inválido');
+                }
+                appState = {
+                    pricePerDozen: Number(parsed.pricePerDozen) || 30,
+                    people: parsed.people,
+                    bottles: Array.isArray(parsed.bottles) ? parsed.bottles : []
+                };
+                document.getElementById('input-preco-duzia').value = appState.pricePerDozen;
+                saveState(true);
+                closeBackupModal();
+                showToast('Dados importados com sucesso!', '📥');
+            } catch (e) {
+                showToast('Código inválido. Verifique o JSON colado.', '⚠️');
+            }
+        }
+
+        function confirmResetData() {
+            openConfirmModal(
+                'Restaurar lista original?',
+                'Isso apagará suas alterações atuais e voltará aos 15 participantes da enquete do WhatsApp.',
+                () => {
+                    appState = JSON.parse(JSON.stringify(INITIAL_DATA));
+                    document.getElementById('input-preco-duzia').value = appState.pricePerDozen;
+                    saveState(true);
+                    showToast('Lista original restaurada!', '↺');
+                }
+            );
+        }
+
+        // Utilitários de UI (Clipboard, Modal Confirmação, Toast)
+        function copyToClipboard(text, successMsg) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg, '✅');
+            } catch (err) {
+                showToast('Não foi possível copiar automaticamente.', '⚠️');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function openConfirmModal(title, msg, onConfirm) {
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-message').textContent = msg;
+            confirmCallback = onConfirm;
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            confirmCallback = null;
+        }
+
+        document.getElementById('confirm-yes-btn').addEventListener('click', () => {
+            if (typeof confirmCallback === 'function') confirmCallback();
+            closeConfirmModal();
+        });
+
+        let toastTimer = null;
+        function showToast(message, icon = '✅') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = message;
+            document.getElementById('toast-icon').textContent = icon;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex', 'toast-enter');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex', 'toast-enter');
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+    </script>
+</body>
+</html>
