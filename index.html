@@ -190,7 +190,7 @@
             </div>
         </header>
 
-        <!-- NAVEGAÇÃO POR ABAS (TABS EM PÍLULA COM CONTADORES SEMPRE VISÍVEIS) -->
+        <!-- NAVEGAÇÃO POR ABAS (3 ABAS SIMÉTRICAS COM CONTADORES SEMPRE VISÍVEIS) -->
         <nav class="flex items-stretch gap-1 sm:gap-2 my-4 bg-paperDark/95 p-1 sm:p-1.5 rounded-full border-2 border-cobalt w-full box-border overflow-hidden" role="tablist" aria-label="Seções do Evento">
             <button onclick="switchTab('ostras')" id="tab-btn-ostras" role="tab" aria-selected="true"
                 class="flex-1 min-w-0 py-2 px-1.5 sm:py-2.5 sm:px-3 text-[11px] sm:text-sm font-extrabold uppercase tracking-tight sm:tracking-wider rounded-full transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 bg-cobalt text-paper shadow-sm leading-tight text-center overflow-hidden cursor-pointer">
@@ -216,6 +216,7 @@
                     <span>💰</span>
                     <span class="truncate">Info &amp; Rateio</span>
                 </span>
+                <span id="badge-rateio-tab" class="text-[9px] sm:text-[10px] bg-mustard text-cobaltDark px-1.5 py-0.5 rounded-full font-black shrink-0 shadow-2xs" title="Pagos / Participantes com consumo">0/11</span>
             </button>
         </nav>
 
@@ -234,14 +235,14 @@
 
                 <div class="bg-white/95 p-3 hand-border-sm flex flex-col items-center justify-between text-center min-h-[5.6rem] sm:min-h-[6.4rem]">
                     <span class="text-[10px] font-extrabold uppercase tracking-wider text-cobalt/80 leading-tight">Comem Ceviche</span>
-                    <span id="kpi-ceviche-count" class="text-lg sm:text-2xl font-black text-cobalt leading-none my-1">15</span>
+                    <span id="kpi-ceviche-count" class="text-lg sm:text-2xl font-black text-cobalt leading-none my-1">0 pessoas</span>
                     <span id="kpi-ceviche-share" class="text-[10px] sm:text-[11px] font-semibold text-cobalt/80 leading-tight">R$ 0,00 / pessoa</span>
                 </div>
 
                 <div class="bg-white/95 p-3 hand-border-sm flex flex-col items-center justify-between text-center min-h-[5.6rem] sm:min-h-[6.4rem]">
                     <span class="text-[10px] font-extrabold uppercase tracking-wider text-cobalt/80 leading-tight">Total Evento</span>
                     <span id="kpi-custo-total" class="text-base sm:text-2xl font-black text-emerald-700 leading-none my-1">R$ 420,00</span>
-                    <span id="kpi-pediram" class="text-[10px] sm:text-[11px] font-semibold text-cobalt/80 leading-tight">11 de 15 ostras</span>
+                    <span id="kpi-pediram" class="text-[10px] sm:text-[11px] font-semibold text-cobalt/80 leading-tight">11 de 15 c/ ostras</span>
                 </div>
             </div>
 
@@ -266,7 +267,7 @@
                         </select>
 
                         <label class="flex items-center gap-1.5 bg-paper px-2.5 py-2 rounded-xl border border-cobalt/35 text-xs font-extrabold text-cobalt cursor-pointer select-none whitespace-nowrap" title="Participa do rateio do Ceviche">
-                            <input type="checkbox" id="quick-ceviche-check" checked class="w-4 h-4 accent-cobalt rounded">
+                            <input type="checkbox" id="quick-ceviche-check" class="w-4 h-4 accent-cobalt rounded">
                             <span>🐟 Ceviche</span>
                         </label>
 
@@ -301,11 +302,11 @@
                         </button>
                         <button onclick="setFilter('with_ceviche')" id="filter-with_ceviche"
                             class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer">
-                            🐟 Com ceviche (<span id="count-with_ceviche">15</span>)
+                            🐟 Com ceviche (<span id="count-with_ceviche">0</span>)
                         </button>
                         <button onclick="setFilter('pending_pay')" id="filter-pending_pay"
                             class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer">
-                            ⏳ Pendente (<span id="count-pending_pay">15</span>)
+                            ⏳ Pendente (<span id="count-pending_pay">11</span>)
                         </button>
                         <button onclick="setFilter('paid')" id="filter-paid"
                             class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer">
@@ -421,7 +422,7 @@
                             <span>🐟</span> Gasto Total do Ceviche
                         </h2>
                         <p class="text-xs text-cobalt/75 mt-1">
-                            Dividido igualmente entre os <strong id="info-ceviche-eaters">15</strong> marcados com Ceviche (<strong id="info-ceviche-per-person">R$ 0,00</strong>/pessoa).
+                            Dividido igualmente entre os <strong id="info-ceviche-eaters">0</strong> marcados com Ceviche (<strong id="info-ceviche-per-person">R$ 0,00</strong>/pessoa).
                         </p>
                     </div>
                     <div class="flex items-center justify-between bg-cobaltSoft/70 px-3 py-2 rounded-xl border border-cobalt/35">
@@ -684,25 +685,25 @@
             cevicheTotalCost: 0,
             orders: [
                 // Uma dúzia (1) - 5 votos
-                { id: 'p1', name: 'Jessica Dal Magro Cervejeira', dozens: 1, ceviche: true, paid: false, note: '' },
-                { id: 'p2', name: 'Lenir Filho AcervA PR', dozens: 1, ceviche: true, paid: false, note: '' },
-                { id: 'p3', name: 'Edison Sanfelice', dozens: 1, ceviche: true, paid: false, note: '' },
-                { id: 'p4', name: 'Gustavo Julio Soria Cuesta', dozens: 1, ceviche: true, paid: false, note: '' },
-                { id: 'p5', name: 'Fer Curitiba BJCP', dozens: 1, ceviche: true, paid: false, note: '' },
+                { id: 'p1', name: 'Jessica Dal Magro Cervejeira', dozens: 1, ceviche: false, paid: false, note: '' },
+                { id: 'p2', name: 'Lenir Filho AcervA PR', dozens: 1, ceviche: false, paid: false, note: '' },
+                { id: 'p3', name: 'Edison Sanfelice', dozens: 1, ceviche: false, paid: false, note: '' },
+                { id: 'p4', name: 'Gustavo Julio Soria Cuesta', dozens: 1, ceviche: false, paid: false, note: '' },
+                { id: 'p5', name: 'Fer Curitiba BJCP', dozens: 1, ceviche: false, paid: false, note: '' },
                 // Três dúzias (3) - 2 votos
-                { id: 'p6', name: 'Junka André Junqueira Morada', dozens: 3, ceviche: true, paid: false, note: '' },
-                { id: 'p7', name: 'Hugo Zeni Neto', dozens: 3, ceviche: true, paid: false, note: '' },
+                { id: 'p6', name: 'Junka André Junqueira Morada', dozens: 3, ceviche: false, paid: false, note: '' },
+                { id: 'p7', name: 'Hugo Zeni Neto', dozens: 3, ceviche: false, paid: false, note: '' },
                 // Uma dúzia e meia (1.5) - 1 voto ("Você")
-                { id: 'p8', name: 'Mateus (Você)', dozens: 1.5, ceviche: true, paid: false, note: 'Organizador' },
+                { id: 'p8', name: 'Mateus (Você)', dozens: 1.5, ceviche: false, paid: false, note: 'Organizador' },
                 // Meia dúzia (0.5) - 3 votos
-                { id: 'p9', name: 'Oscar Freitas Jr', dozens: 0.5, ceviche: true, paid: false, note: '' },
-                { id: 'p10', name: 'Adriana Acerva', dozens: 0.5, ceviche: true, paid: false, note: '' },
-                { id: 'p11', name: 'Dionisio Mineiro Concerva', dozens: 0.5, ceviche: true, paid: false, note: '' },
+                { id: 'p9', name: 'Oscar Freitas Jr', dozens: 0.5, ceviche: false, paid: false, note: '' },
+                { id: 'p10', name: 'Adriana Acerva', dozens: 0.5, ceviche: false, paid: false, note: '' },
+                { id: 'p11', name: 'Dionisio Mineiro Concerva', dozens: 0.5, ceviche: false, paid: false, note: '' },
                 // Nenhuma (0) - 4 votos
-                { id: 'p12', name: 'Marcelo Arruda Acerva', dozens: 0, ceviche: true, paid: false, note: '' },
-                { id: 'p13', name: 'Luiz Leal', dozens: 0, ceviche: true, paid: false, note: '' },
-                { id: 'p14', name: 'Marcos O Jr', dozens: 0, ceviche: true, paid: false, note: '' },
-                { id: 'p15', name: 'Edmilson Kleinert', dozens: 0, ceviche: true, paid: false, note: '' }
+                { id: 'p12', name: 'Marcelo Arruda Acerva', dozens: 0, ceviche: false, paid: false, note: '' },
+                { id: 'p13', name: 'Luiz Leal', dozens: 0, ceviche: false, paid: false, note: '' },
+                { id: 'p14', name: 'Marcos O Jr', dozens: 0, ceviche: false, paid: false, note: '' },
+                { id: 'p15', name: 'Edmilson Kleinert', dozens: 0, ceviche: false, paid: false, note: '' }
             ],
             bottles: []
         };
@@ -785,7 +786,7 @@
                             cevicheTotalCost: Number(parsed.cevicheTotalCost) >= 0 ? Number(parsed.cevicheTotalCost) : 0,
                             orders: parsed.orders.map(o => ({
                                 ...o,
-                                ceviche: typeof o.ceviche === 'boolean' ? o.ceviche : true
+                                ceviche: typeof o.ceviche === 'boolean' ? o.ceviche : false
                             })),
                             bottles: Array.isArray(parsed.bottles) ? parsed.bottles.map(b => ({
                                 ...b,
@@ -847,7 +848,7 @@
                             id: String(o.id || ('p_' + Math.random())),
                             name: String(o.name || ''),
                             dozens: Number(o.dozens) || 0,
-                            ceviche: typeof o.ceviche === 'boolean' ? o.ceviche : true,
+                            ceviche: typeof o.ceviche === 'boolean' ? o.ceviche : false,
                             paid: Boolean(o.paid),
                             note: String(o.note || '')
                         })) : [],
@@ -1075,14 +1076,20 @@
             document.getElementById('kpi-custo-total').textContent = formatCurrency(metrics.grandTotalCost);
             document.getElementById('kpi-pediram').textContent = `${peopleWithOrder} de ${appState.orders.length} c/ ostras`;
 
-            // Badges das abas (mantendo sempre o contraste amarelo pastel + texto escuro)
+            // Participantes com consumo (pediram ostras OU marcaram ceviche)
+            const activeConsumers = appState.orders.filter(p => (Number(p.dozens) || 0) > 0 || Boolean(p.ceviche));
+            const paidConsumersCount = activeConsumers.filter(p => Boolean(p.paid)).length;
+            const totalConsumersCount = activeConsumers.length;
+
+            // Badges das 3 abas (mantendo sempre o contraste amarelo pastel + texto escuro)
             document.getElementById('badge-ostras-tab').textContent = formatDozensBadge(metrics.totalDozens);
             document.getElementById('badge-bottles-tab').textContent = `${appState.bottles.length}`;
+            document.getElementById('badge-rateio-tab').textContent = `${paidConsumersCount}/${totalConsumersCount}`;
 
             // Contadores dos filtros
             const cevicheCount = metrics.cevicheEatersCount;
-            const paidCount = appState.orders.filter(p => getPersonTotalCost(p, metrics).totalCost > 0 && p.paid).length;
-            const pendingCount = appState.orders.filter(p => getPersonTotalCost(p, metrics).totalCost > 0 && !p.paid).length;
+            const paidCount = activeConsumers.filter(p => p.paid).length;
+            const pendingCount = activeConsumers.filter(p => !p.paid).length;
 
             document.getElementById('count-all').textContent = appState.orders.length;
             document.getElementById('count-with_order').textContent = peopleWithOrder;
@@ -1148,7 +1155,7 @@
 
             nameInput.value = '';
             dozensSelect.value = '1';
-            cevicheCheck.checked = true;
+            cevicheCheck.checked = false;
             saveState(true);
             showToast(`${name} adicionado(a)!`, '🦪');
         }
@@ -1166,11 +1173,11 @@
                 if (!matchesQuery) return false;
 
                 const dz = Number(p.dozens) || 0;
-                const personTotal = getPersonTotalCost(p, metrics).totalCost;
+                const hasConsumption = dz > 0 || Boolean(p.ceviche);
                 if (currentFilter === 'with_order') return dz > 0;
                 if (currentFilter === 'with_ceviche') return Boolean(p.ceviche);
-                if (currentFilter === 'paid') return personTotal > 0 && p.paid;
-                if (currentFilter === 'pending_pay') return personTotal > 0 && !p.paid;
+                if (currentFilter === 'paid') return hasConsumption && p.paid;
+                if (currentFilter === 'pending_pay') return hasConsumption && !p.paid;
                 return true;
             });
 
@@ -1263,7 +1270,7 @@
                             </button>
 
                             <!-- Toggle Pago -->
-                            ${costs.totalCost > 0 ? `
+                            ${hasConsumption ? `
                             <button onclick="togglePaid('${person.id}')"
                                 class="px-2.5 py-1 rounded-lg text-xs font-extrabold flex items-center gap-1 transition cursor-pointer ${person.paid ? 'bg-emerald-600/90 text-white shadow-2xs' : 'bg-mustardLight text-cobalt border border-cobalt/35 hover:bg-mustard'}">
                                 <span>${person.paid ? '✅ Pago' : '⏳ Pendente'}</span>
@@ -1569,28 +1576,28 @@
             document.getElementById('info-ceviche-per-person').textContent = formatCurrency(metrics.cevichePerPerson);
             document.getElementById('info-ceviche-cota').textContent = formatCurrency(metrics.cevichePerPerson);
 
-            const participantsWithCost = appState.orders
+            const participantsWithConsumption = appState.orders
                 .map(p => ({ person: p, costs: getPersonTotalCost(p, metrics) }))
-                .filter(item => item.costs.totalCost > 0)
+                .filter(item => (Number(item.person.dozens) || 0) > 0 || Boolean(item.person.ceviche))
                 .sort((a, b) => b.costs.totalCost - a.costs.totalCost);
 
-            const totalValue = participantsWithCost.reduce((sum, item) => sum + item.costs.totalCost, 0);
-            const paidValue = participantsWithCost.filter(item => item.person.paid).reduce((sum, item) => sum + item.costs.totalCost, 0);
+            const totalValue = participantsWithConsumption.reduce((sum, item) => sum + item.costs.totalCost, 0);
+            const paidValue = participantsWithConsumption.filter(item => item.person.paid).reduce((sum, item) => sum + item.costs.totalCost, 0);
 
             document.getElementById('info-arrecadado').textContent = `${formatCurrency(paidValue)} / ${formatCurrency(totalValue)}`;
             const pct = totalValue > 0 ? Math.min(100, Math.round((paidValue / totalValue) * 100)) : 0;
             document.getElementById('payment-progress-bar').style.width = `${pct}%`;
 
-            if (participantsWithCost.length === 0) {
-                list.innerHTML = `<p class="py-4 text-center text-xs text-cobalt/70">Nenhum valor a ratear ainda (defina ostras ou o gasto do ceviche acima).</p>`;
+            if (participantsWithConsumption.length === 0) {
+                list.innerHTML = `<p class="py-4 text-center text-xs text-cobalt/70">Nenhum participante com consumo ainda.</p>`;
                 return;
             }
 
-            list.innerHTML = participantsWithCost.map(({ person, costs }) => {
+            list.innerHTML = participantsWithConsumption.map(({ person, costs }) => {
                 const dz = Number(person.dozens) || 0;
                 const breakdownParts = [];
                 if (dz > 0) breakdownParts.push(`🦪 ${formatDozensBadge(dz)} (${formatCurrency(costs.oystersCost)})`);
-                if (person.ceviche && costs.cevicheCost > 0) breakdownParts.push(`🐟 Ceviche (${formatCurrency(costs.cevicheCost)})`);
+                if (person.ceviche) breakdownParts.push(`🐟 Ceviche (${formatCurrency(costs.cevicheCost)})`);
 
                 return `
                     <div class="py-2.5 flex items-center justify-between gap-2">
@@ -1626,7 +1633,7 @@
             if (Number(p.dozens) > 0) {
                 itemsDesc.push(`• Ostras (${formatDozensDetailed(p.dozens)}): *${formatCurrency(costs.oystersCost)}*`);
             }
-            if (p.ceviche && costs.cevicheCost > 0) {
+            if (p.ceviche) {
                 itemsDesc.push(`• Ceviche (rateio ${metrics.cevicheEatersCount} pessoas): *${formatCurrency(costs.cevicheCost)}*`);
             }
 
