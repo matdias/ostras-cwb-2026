@@ -66,9 +66,6 @@
             border-radius: 12px 10px 13px 11px / 11px 13px 10px 12px;
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
         @keyframes slideUp {
             from { transform: translate(-50%, 100%); opacity: 0; }
             to { transform: translate(-50%, 0); opacity: 1; }
@@ -214,32 +211,32 @@
         </header>
 
         <!-- NAVEGAÇÃO POR ABAS -->
-        <nav class="flex items-stretch gap-1 sm:gap-2 my-4 bg-paperDark/95 p-1 sm:p-1.5 rounded-full border-2 border-cobalt w-full box-border overflow-hidden" role="tablist" aria-label="Seções do Evento">
+        <nav class="grid grid-cols-3 gap-1 sm:gap-2 my-4 bg-paperDark/95 p-1 sm:p-1.5 rounded-2xl sm:rounded-full border-2 border-cobalt w-full box-border" role="tablist" aria-label="Seções do Evento">
             <button onclick="switchTab('ostras')" id="tab-btn-ostras" role="tab" aria-selected="true"
-                class="flex-1 min-w-0 py-2 px-1.5 sm:py-2.5 sm:px-3 text-[11px] sm:text-sm font-extrabold uppercase tracking-tight sm:tracking-wider rounded-full transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 bg-cobalt text-paper shadow-sm leading-tight text-center overflow-hidden cursor-pointer">
-                <span class="flex items-center justify-center gap-1 truncate max-w-full">
-                    <span>🦪</span>
+                class="w-full min-w-0 py-2 px-1 sm:py-2.5 sm:px-3 text-[10px] sm:text-xs font-extrabold uppercase tracking-tight sm:tracking-wider rounded-xl sm:rounded-full transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 bg-cobalt text-paper shadow-sm leading-tight text-center cursor-pointer">
+                <span class="flex items-center justify-center gap-1 max-w-full">
+                    <span class="shrink-0">🦪</span>
                     <span class="truncate">Ostras</span>
                 </span>
-                <span id="badge-ostras-tab" class="text-[9px] sm:text-[10px] bg-mustard text-cobaltDark px-1.5 py-0.5 rounded-full font-black shrink-0 shadow-2xs">0 dz</span>
+                <span id="badge-ostras-tab" class="text-[9px] sm:text-[10px] bg-mustard text-cobaltDark px-2 py-0.5 rounded-full font-black shrink-0 shadow-2xs">0 dz</span>
             </button>
 
             <button onclick="switchTab('bottleshare')" id="tab-btn-bottleshare" role="tab" aria-selected="false"
-                class="flex-1 min-w-0 py-2 px-1.5 sm:py-2.5 sm:px-3 text-[11px] sm:text-sm font-extrabold uppercase tracking-tight sm:tracking-wider rounded-full transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 text-cobalt hover:bg-cobalt/10 leading-tight text-center overflow-hidden cursor-pointer">
-                <span class="flex items-center justify-center gap-1 truncate max-w-full">
-                    <span>🍾</span>
+                class="w-full min-w-0 py-2 px-1 sm:py-2.5 sm:px-3 text-[10px] sm:text-xs font-extrabold uppercase tracking-tight sm:tracking-wider rounded-xl sm:rounded-full transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 text-cobalt hover:bg-cobalt/10 leading-tight text-center cursor-pointer">
+                <span class="flex items-center justify-center gap-1 max-w-full">
+                    <span class="shrink-0">🍾</span>
                     <span class="truncate">Bottle Share</span>
                 </span>
-                <span id="badge-bottles-tab" class="text-[9px] sm:text-[10px] bg-mustard text-cobaltDark px-1.5 py-0.5 rounded-full font-black shrink-0 shadow-2xs">0</span>
+                <span id="badge-bottles-tab" class="text-[9px] sm:text-[10px] bg-mustard text-cobaltDark px-2 py-0.5 rounded-full font-black shrink-0 shadow-2xs">0</span>
             </button>
 
             <button onclick="switchTab('info')" id="tab-btn-info" role="tab" aria-selected="false"
-                class="flex-1 min-w-0 py-2 px-1.5 sm:py-2.5 sm:px-3 text-[11px] sm:text-sm font-extrabold uppercase tracking-tight sm:tracking-wider rounded-full transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 text-cobalt hover:bg-cobalt/10 leading-tight text-center overflow-hidden cursor-pointer">
-                <span class="flex items-center justify-center gap-1 truncate max-w-full">
-                    <span>💰</span>
+                class="w-full min-w-0 py-2 px-1 sm:py-2.5 sm:px-3 text-[10px] sm:text-xs font-extrabold uppercase tracking-tight sm:tracking-wider rounded-xl sm:rounded-full transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 text-cobalt hover:bg-cobalt/10 leading-tight text-center cursor-pointer">
+                <span class="flex items-center justify-center gap-1 max-w-full">
+                    <span class="shrink-0">💰</span>
                     <span class="truncate">Info &amp; Rateio</span>
                 </span>
-                <span id="badge-rateio-tab" class="text-[9px] sm:text-[10px] bg-mustard text-cobaltDark px-1.5 py-0.5 rounded-full font-black shrink-0 shadow-2xs" title="Pagos / Participantes com consumo">0/0</span>
+                <span id="badge-rateio-tab" class="text-[9px] sm:text-[10px] bg-mustard text-cobaltDark px-2 py-0.5 rounded-full font-black shrink-0 shadow-2xs" title="Pagos / Participantes com consumo">0/0</span>
             </button>
         </nav>
 
@@ -267,15 +264,16 @@
                 </div>
             </div>
 
-            <!-- Barra de Ação: Adicionar Rápido (só modo edição) + Busca -->
-            <div class="bg-white/95 p-3 hand-border-sm space-y-2.5">
-                <form id="quick-add-form" onsubmit="quickAddPerson(event)" class="edit-only flex flex-col sm:flex-row gap-2">
+            <!-- Barra de Ação: Adicionar Rápido (só modo edição) + Busca + Filtros -->
+            <div class="bg-white/95 p-3 hand-border-sm space-y-2.5 w-full box-border overflow-hidden">
+                <form id="quick-add-form" onsubmit="quickAddPerson(event)" class="edit-only flex flex-col sm:flex-row gap-2 w-full">
                     <input type="text" id="quick-name-input" required placeholder="Nome do participante..."
-                        class="flex-1 py-2 px-3 bg-paper text-cobalt placeholder-cobalt/45 text-sm font-semibold rounded-xl border border-cobalt/35 focus:outline-none focus:border-cobalt">
+                        class="w-full sm:flex-1 h-10 px-3 bg-paper text-cobalt placeholder-cobalt/45 text-sm font-semibold rounded-xl border border-cobalt/35 focus:outline-none focus:border-cobalt box-border">
                     
-                    <div class="flex gap-2 items-center">
+                    <!-- Grid de 3 colunas idênticas no mobile para alinhar e preencher 100% da largura -->
+                    <div class="grid grid-cols-3 sm:flex gap-1.5 sm:gap-2 items-center w-full sm:w-auto">
                         <select id="quick-dozens-select" aria-label="Quantidade de dúzias"
-                            class="py-2 px-2.5 bg-paper text-cobalt text-sm font-extrabold rounded-xl border border-cobalt/35 focus:outline-none focus:border-cobalt">
+                            class="w-full sm:w-auto h-10 px-1.5 sm:px-2.5 bg-paper text-cobalt text-xs sm:text-sm font-extrabold rounded-xl border border-cobalt/35 focus:outline-none focus:border-cobalt text-center sm:text-left">
                             <option value="0">0 dz</option>
                             <option value="0.5">½ dz (6)</option>
                             <option value="1" selected>1 dz (12)</option>
@@ -287,50 +285,50 @@
                             <option value="4">4 dz (48)</option>
                         </select>
 
-                        <label class="flex items-center gap-1.5 bg-paper px-2.5 py-2 rounded-xl border border-cobalt/35 text-xs font-extrabold text-cobalt cursor-pointer select-none whitespace-nowrap" title="Participa do rateio do Ceviche">
-                            <input type="checkbox" id="quick-ceviche-check" class="w-4 h-4 accent-cobalt rounded">
+                        <label class="w-full sm:w-auto h-10 flex items-center justify-center gap-1 sm:gap-1.5 bg-paper px-1.5 sm:px-2.5 rounded-xl border border-cobalt/35 text-xs font-extrabold text-cobalt cursor-pointer select-none whitespace-nowrap" title="Participa do rateio do Ceviche">
+                            <input type="checkbox" id="quick-ceviche-check" class="w-4 h-4 accent-cobalt rounded shrink-0">
                             <span>🐟 Ceviche</span>
                         </label>
 
                         <button type="submit"
-                            class="bg-cobalt hover:bg-cobaltDark active:scale-[0.99] text-paper font-bold text-xs sm:text-sm py-2 px-3.5 rounded-xl shadow-2xs flex items-center justify-center gap-1 transition cursor-pointer whitespace-nowrap">
+                            class="w-full sm:w-auto h-10 bg-cobalt hover:bg-cobaltDark active:scale-[0.99] text-paper font-bold text-xs sm:text-sm px-2 sm:px-3.5 rounded-xl shadow-2xs flex items-center justify-center gap-1 transition cursor-pointer whitespace-nowrap">
                             <span class="text-base leading-none">+</span>
                             <span>Adicionar</span>
                         </button>
                     </div>
                 </form>
 
-                <!-- Busca e Filtros -->
-                <div id="search-filter-wrapper" class="flex flex-col sm:flex-row gap-2 pt-1 border-t border-cobalt/10">
-                    <div class="relative flex-1">
+                <!-- Busca e Filtros (Centralizados e com quebra de linha para não cortar na direita) -->
+                <div id="search-filter-wrapper" class="flex flex-col gap-2 pt-2 border-t border-cobalt/10 w-full">
+                    <div class="relative w-full">
                         <input type="text" id="search-input" placeholder="Buscar por nome ou observação..."
                             oninput="renderOystersList()"
-                            class="w-full py-2 pl-8 pr-8 bg-paper text-cobalt placeholder-cobalt/45 text-xs sm:text-sm font-medium rounded-xl border border-cobalt/25 focus:outline-none focus:border-cobalt">
+                            class="w-full h-10 pl-8 pr-8 bg-paper text-cobalt placeholder-cobalt/45 text-xs sm:text-sm font-medium rounded-xl border border-cobalt/25 focus:outline-none focus:border-cobalt box-border">
                         <svg class="w-4 h-4 text-cobalt/50 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
-                        <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-cobalt/60 hover:text-cobalt font-bold text-xs">✕</button>
+                        <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-cobalt/60 hover:text-cobalt font-bold text-xs cursor-pointer">✕</button>
                     </div>
 
-                    <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-0.5" role="group" aria-label="Filtrar participantes">
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 w-full" role="group" aria-label="Filtrar participantes">
                         <button onclick="setFilter('all')" id="filter-all"
-                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-cobalt text-paper border border-cobalt transition cursor-pointer">
+                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-cobalt text-paper border border-cobalt transition cursor-pointer inline-flex items-center justify-center">
                             Todos (<span id="count-all">0</span>)
                         </button>
                         <button onclick="setFilter('with_order')" id="filter-with_order"
-                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer">
+                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer inline-flex items-center justify-center">
                             🦪 Com ostras (<span id="count-with_order">0</span>)
                         </button>
                         <button onclick="setFilter('with_ceviche')" id="filter-with_ceviche"
-                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer">
+                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer inline-flex items-center justify-center">
                             🐟 Com ceviche (<span id="count-with_ceviche">0</span>)
                         </button>
                         <button onclick="setFilter('pending_pay')" id="filter-pending_pay"
-                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer">
+                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer inline-flex items-center justify-center">
                             ⏳ Pendente (<span id="count-pending_pay">0</span>)
                         </button>
                         <button onclick="setFilter('paid')" id="filter-paid"
-                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer">
+                            class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer inline-flex items-center justify-center">
                             ✅ Pagos (<span id="count-paid">0</span>)
                         </button>
                     </div>
@@ -407,7 +405,7 @@
                 </div>
             </div>
 
-            <!-- Configuração de Valores (Input no modo edição / Texto fixo na visualização) -->
+            <!-- Configuração de Valores -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="bg-white/95 p-4 hand-border flex flex-col justify-between gap-3">
                     <div>
@@ -787,7 +785,6 @@
         function applyPermissionsUI() {
             const isEditor = canEdit();
 
-            // Alterna visibilidade de elementos exclusivos de edição ou visualização
             document.querySelectorAll('.edit-only').forEach(el => {
                 el.classList.toggle('hidden', !isEditor);
             });
@@ -795,14 +792,12 @@
                 el.classList.toggle('hidden', isEditor);
             });
 
-            // Ajusta borda superior da barra de busca quando o form de adição rápida está oculto
             const searchWrapper = document.getElementById('search-filter-wrapper');
             if (searchWrapper) {
                 searchWrapper.classList.toggle('border-t', isEditor);
-                searchWrapper.classList.toggle('pt-1', isEditor);
+                searchWrapper.classList.toggle('pt-2', isEditor);
             }
 
-            // Atualiza badge de papel no cabeçalho
             const roleText = document.getElementById('role-status-text');
             const upgradeBtn = document.getElementById('upgrade-edit-btn');
             if (roleText && upgradeBtn) {
@@ -1281,7 +1276,7 @@
         }
 
         // =========================================================
-        // ABA 1: OSTRAS & CEVICHE (RESPEITA MODO VISUALIZAÇÃO/EDIÇÃO)
+        // ABA 1: OSTRAS & CEVICHE
         // =========================================================
         function setFilter(filterKey) {
             currentFilter = filterKey;
