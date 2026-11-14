@@ -623,9 +623,12 @@
                         </select>
                     </div>
                     <div>
-                        <label for="bottle-owner-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Responsável</label>
-                        <input type="text" id="bottle-owner-input" required placeholder="Quem vai levar?"
+                        <label for="bottle-owner-select" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Responsável</label>
+                        <select id="bottle-owner-select" onchange="onBottleOwnerSelectChange()"
                             class="w-full p-2.5 text-sm font-semibold bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                        </select>
+                        <input type="text" id="bottle-owner-custom-input" placeholder="Digite o nome..."
+                            class="hidden mt-2 w-full p-2.5 text-sm font-semibold bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
                     </div>
                 </div>
 
@@ -1168,18 +1171,20 @@
 
             const metrics = getFinancialMetrics();
 
-            const filtered = appState.orders.filter(p => {
-                const matchesQuery = p.name.toLowerCase().includes(query) || (p.note && p.note.toLowerCase().includes(query));
-                if (!matchesQuery) return false;
+            const filtered = appState.orders
+                .filter(p => {
+                    const matchesQuery = p.name.toLowerCase().includes(query) || (p.note && p.note.toLowerCase().includes(query));
+                    if (!matchesQuery) return false;
 
-                const dz = Number(p.dozens) || 0;
-                const hasConsumption = dz > 0 || Boolean(p.ceviche);
-                if (currentFilter === 'with_order') return dz > 0;
-                if (currentFilter === 'with_ceviche') return Boolean(p.ceviche);
-                if (currentFilter === 'paid') return hasConsumption && p.paid;
-                if (currentFilter === 'pending_pay') return hasConsumption && !p.paid;
-                return true;
-            });
+                    const dz = Number(p.dozens) || 0;
+                    const hasConsumption = dz > 0 || Boolean(p.ceviche);
+                    if (currentFilter === 'with_order') return dz > 0;
+                    if (currentFilter === 'with_ceviche') return Boolean(p.ceviche);
+                    if (currentFilter === 'paid') return hasConsumption && p.paid;
+                    if (currentFilter === 'pending_pay') return hasConsumption && !p.paid;
+                    return true;
+                })
+                .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
 
             if (filtered.length === 0) {
                 container.innerHTML = `
@@ -1395,6 +1400,64 @@
         // =========================================================
         // ABA 2: BOTTLE SHARE (COM CHECKBOX DE FOTO ENVIADA)
         // =========================================================
+        function populateBottleOwnerSelect(selectedOwner = '') {
+            const select = document.getElementById('bottle-owner-select');
+            const customInput = document.getElementById('bottle-owner-custom-input');
+            if (!select || !customInput) return;
+
+            // Resgata nomes únicos da aba Ostras em ordem alfabética
+            const uniqueSortedNames = [...new Set(
+                appState.orders
+                    .map(o => (o.name || '').trim())
+                    .filter(Boolean)
+            )].sort((a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' }));
+
+            let optionsHtml = `<option value="">Selecione...</option>`;
+            uniqueSortedNames.forEach(name => {
+                optionsHtml += `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`;
+            });
+            optionsHtml += `<option value="__OTHER__">+ Outro responsável (digitar nome)</option>`;
+
+            select.innerHTML = optionsHtml;
+
+            const trimmedSelected = (selectedOwner || '').trim();
+            if (!trimmedSelected) {
+                select.value = '';
+                customInput.value = '';
+                customInput.classList.add('hidden');
+                customInput.required = false;
+            } else {
+                const matchedName = uniqueSortedNames.find(
+                    n => n.localeCompare(trimmedSelected, 'pt-BR', { sensitivity: 'base' }) === 0
+                );
+                if (matchedName) {
+                    select.value = matchedName;
+                    customInput.value = '';
+                    customInput.classList.add('hidden');
+                    customInput.required = false;
+                } else {
+                    select.value = '__OTHER__';
+                    customInput.value = trimmedSelected;
+                    customInput.classList.remove('hidden');
+                    customInput.required = true;
+                }
+            }
+        }
+
+        function onBottleOwnerSelectChange() {
+            const select = document.getElementById('bottle-owner-select');
+            const customInput = document.getElementById('bottle-owner-custom-input');
+            if (select.value === '__OTHER__') {
+                customInput.classList.remove('hidden');
+                customInput.required = true;
+                customInput.focus();
+            } else {
+                customInput.classList.add('hidden');
+                customInput.required = false;
+                customInput.value = '';
+            }
+        }
+
         function openAddBottleModal() {
             document.getElementById('bottle-modal-title').textContent = 'Cadastrar Garrafa';
             document.getElementById('edit-bottle-id').value = '';
@@ -1402,7 +1465,7 @@
             document.getElementById('bottle-brewery-input').value = '';
             document.getElementById('bottle-style-input').value = '';
             document.getElementById('bottle-volume-input').value = '1500ml';
-            document.getElementById('bottle-owner-input').value = '';
+            populateBottleOwnerSelect('');
             document.getElementById('bottle-photo-input').checked = false;
 
             const modal = document.getElementById('bottle-modal');
@@ -1421,7 +1484,7 @@
             document.getElementById('bottle-brewery-input').value = b.brewery || '';
             document.getElementById('bottle-style-input').value = b.style || '';
             document.getElementById('bottle-volume-input').value = b.volume || '1500ml';
-            document.getElementById('bottle-owner-input').value = b.owner || '';
+            populateBottleOwnerSelect(b.owner || '');
             document.getElementById('bottle-photo-input').checked = Boolean(b.photoSent);
 
             const modal = document.getElementById('bottle-modal');
@@ -1442,10 +1505,22 @@
             const brewery = document.getElementById('bottle-brewery-input').value.trim();
             const style = document.getElementById('bottle-style-input').value.trim();
             const volume = document.getElementById('bottle-volume-input').value;
-            const owner = document.getElementById('bottle-owner-input').value.trim();
+
+            const ownerSelect = document.getElementById('bottle-owner-select');
+            const ownerCustom = document.getElementById('bottle-owner-custom-input');
+            const owner = ownerSelect.value === '__OTHER__'
+                ? ownerCustom.value.trim()
+                : ownerSelect.value.trim();
+
             const photoSent = document.getElementById('bottle-photo-input').checked;
 
-            if (!beer || !owner) return;
+            if (!beer) return;
+            if (!owner) {
+                showToast('Selecione ou informe o responsável pela garrafa.', '⚠️');
+                if (ownerSelect.value === '__OTHER__') ownerCustom.focus();
+                else ownerSelect.focus();
+                return;
+            }
 
             if (id) {
                 const b = appState.bottles.find(item => item.id === id);
