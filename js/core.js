@@ -240,6 +240,7 @@ function loadLocalCache() {
                     })),
                     bottles: Array.isArray(parsed.bottles) ? parsed.bottles.map(b => ({
                         ...b,
+                        country: String(b.country || ''),
                         photoSent: Boolean(b.photoSent)
                     })) : []
                 };
@@ -299,8 +300,9 @@ async function syncFromSheets(showFeedback = true) {
                     id: String(b.id || ('b_' + Math.random())),
                     beer: String(b.beer || ''),
                     brewery: String(b.brewery || ''),
+                    country: String(b.country || ''),
                     style: String(b.style || ''),
-                    volume: String(b.volume || '1500ml'),
+                    volume: String(b.volume || '750ml'),
                     owner: String(b.owner || ''),
                     photoSent: Boolean(b.photoSent)
                 })) : []
