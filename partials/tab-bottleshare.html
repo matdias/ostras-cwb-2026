@@ -1,0 +1,17 @@
+<div class="bg-mustardLight/60 p-4 hand-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div>
+        <h2 class="font-extrabold text-base sm:text-lg text-cobalt flex items-center gap-2">
+            <span>🍾</span> Line-up Bottle Share (1500ml &amp; Especiais)
+        </h2>
+        <p class="text-xs text-cobalt/85 mt-0.5">
+            Confira as garrafas confirmadas e o status das fotos enviadas.
+            <span id="bottles-photos-summary" class="inline-block ml-1 font-extrabold text-cobalt bg-white/80 px-2 py-0.5 rounded-full border border-cobalt/25">0/0 fotos</span>
+        </p>
+    </div>
+    <button onclick="openAddBottleModal()"
+        class="edit-only bg-cobalt hover:bg-cobaltDark text-paper font-bold text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-2xs whitespace-nowrap transition cursor-pointer">
+        + Cadastrar Garrafa
+    </button>
+</div>
+
+<div id="bottles-list" class="space-y-2.5"></div>
