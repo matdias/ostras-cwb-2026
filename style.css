@@ -1,0 +1,39 @@
+body {
+    background-color: #FAF6EE;
+    background-image: url("data:image/svg+xml,%3Csvg width='120' height='200' viewBox='0 0 120 200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='120' height='200' fill='%23FAF6EE'/%3E%3Cpath d='M15 0 Q 23 50, 15 100 T 15 200 L 45 200 Q 53 150, 45 100 T 45 0 Z' fill='%23E8C76B' fill-opacity='0.78'/%3E%3Cpath d='M75 0 Q 83 50, 75 100 T 75 200 L 105 200 Q 113 150, 105 100 T 105 0 Z' fill='%23E8C76B' fill-opacity='0.78'/%3E%3C/svg%3E");
+    background-size: 120px 200px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #44568C;
+    overflow-x: hidden;
+}
+
+.art-paper-card {
+    background-color: #FCFBF8;
+    background-image: 
+        radial-gradient(rgba(68, 86, 140, 0.07) 1px, transparent 1px),
+        radial-gradient(rgba(68, 86, 140, 0.045) 1.5px, transparent 1.5px);
+    background-size: 28px 28px, 43px 43px;
+    background-position: 0 0, 14px 19px;
+    border: 3.5px solid #44568C;
+    border-radius: 26px 22px 28px 24px / 24px 28px 22px 26px;
+    box-shadow: 0 14px 32px -10px rgba(68, 86, 140, 0.18), 0 0 0 6px #FCFBF8;
+}
+
+.hand-border {
+    border: 2px solid #44568C;
+    border-radius: 16px 14px 18px 15px / 15px 17px 14px 16px;
+}
+
+.hand-border-sm {
+    border: 1.5px solid #44568C;
+    border-radius: 12px 10px 13px 11px / 11px 13px 10px 12px;
+}
+
+@keyframes slideUp {
+    from { transform: translate(-50%, 100%); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.toast-enter {
+    animation: slideUp 0.25s ease-out forwards;
+}
