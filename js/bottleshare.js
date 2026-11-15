@@ -178,37 +178,31 @@ function parseBottleVolumeMl(volumeStr) {
 
 function renderBottleCardHtml(b, isEditor) {
     const flagPart = b.country ? `<span class="text-base leading-none shrink-0">${escapeHtml(b.country)}</span>` : '';
+
+    const photoBadgeHtml = b.photoSent
+        ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300">
+               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+               <span>Foto enviada</span>
+           </span>`
+        : `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-300">
+               <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+               <span>Foto pendente</span>
+           </span>`;
+
     return `
-        <div class="${b.photoSent ? 'bg-emerald-50/90' : 'bg-white'} p-3 hand-border-sm transition-all">
-            <div class="flex items-start justify-between gap-2.5">
-                <div class="min-w-0 flex-1">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="text-[11px] font-black uppercase bg-mustard text-cobaltDark px-2 py-0.5 rounded-md shrink-0">
-                            ${escapeHtml(b.volume)}
-                        </span>
-                        ${flagPart}
-                        <h4 class="font-extrabold text-sm sm:text-base text-cobalt leading-snug">${escapeHtml(b.beer)}</h4>
-                    </div>
-
-                    ${b.brewery ? `
-                    <p class="text-xs text-cobalt/85 mt-1">
-                        Cervejaria: <strong>${escapeHtml(b.brewery)}</strong>
-                    </p>
-                    ` : ''}
-
-                    ${b.style ? `
-                    <p class="text-xs text-cobalt/75 mt-0.5">
-                        Estilo: <strong>${escapeHtml(b.style)}</strong>
-                    </p>
-                    ` : ''}
-                </div>
+        <div class="bg-white/95 p-3.5 hand-border-sm transition-all space-y-2">
+            <!-- Linha Superior: Volume + Controles -->
+            <div class="flex items-center justify-between gap-2">
+                <span class="text-[11px] font-black uppercase bg-mustard text-cobaltDark px-2.5 py-0.5 rounded-md shrink-0">
+                    ${escapeHtml(b.volume)}
+                </span>
 
                 <div class="flex items-center gap-1.5 shrink-0">
                     ${isEditor ? `
-                    <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-extrabold cursor-pointer select-none transition ${b.photoSent ? 'bg-emerald-600/90 text-white shadow-2xs' : 'bg-mustardLight/80 text-cobalt border border-cobalt/30 hover:bg-mustard'}" title="Marcar se a foto já foi enviada">
-                        <input type="checkbox" ${b.photoSent ? 'checked' : ''} onchange="toggleBottlePhoto('${b.id}')" class="w-3.5 h-3.5 accent-cobalt rounded cursor-pointer">
-                        <span>${b.photoSent ? '📸 Foto OK' : '📷 S/ foto'}</span>
-                    </label>
+                    <button type="button" onclick="toggleBottlePhoto('${b.id}')" title="Clique para alternar status da foto"
+                        class="cursor-pointer transition hover:opacity-80 active:scale-[0.98]">
+                        ${photoBadgeHtml}
+                    </button>
                     <button onclick="openEditBottleModal('${b.id}')" title="Editar garrafa"
                         class="p-1.5 rounded-lg text-cobalt/70 hover:text-cobalt hover:bg-cobalt/10 transition cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,12 +215,28 @@ function renderBottleCardHtml(b, isEditor) {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                         </svg>
                     </button>
-                    ` : `
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-extrabold ${b.photoSent ? 'bg-emerald-600/90 text-white' : 'bg-mustardLight/80 text-cobalt border border-cobalt/30'}">
-                        ${b.photoSent ? '📸 Foto OK' : '📷 S/ foto'}
-                    </span>
-                    `}
+                    ` : photoBadgeHtml}
                 </div>
+            </div>
+
+            <!-- Corpo em Largura Total: Cerveja + Bandeira, Cervejaria e Estilo -->
+            <div class="w-full space-y-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    ${flagPart}
+                    <h4 class="font-extrabold text-sm sm:text-base text-cobalt leading-snug">${escapeHtml(b.beer)}</h4>
+                </div>
+
+                ${b.brewery ? `
+                <p class="text-xs text-cobalt/85 leading-relaxed">
+                    Cervejaria: <strong>${escapeHtml(b.brewery)}</strong>
+                </p>
+                ` : ''}
+
+                ${b.style ? `
+                <p class="text-xs text-cobalt/75 leading-relaxed">
+                    Estilo: <strong>${escapeHtml(b.style)}</strong>
+                </p>
+                ` : ''}
             </div>
         </div>
     `;
@@ -243,7 +253,6 @@ function renderBottlesList() {
         summaryBadge.textContent = `${photosSentCount}/${totalBottles} fotos enviadas`;
     }
 
-    // Reúne todos os participantes cadastrados + eventuais responsáveis extras que já tenham garrafas
     const allOwnerNamesSet = new Set();
     appState.orders.forEach(p => {
         const cleanName = (p.name || '').trim();
@@ -260,7 +269,7 @@ function renderBottlesList() {
 
     if (sortedOwners.length === 0) {
         container.innerHTML = `
-            <div class="bg-white/90 p-6 hand-border-sm text-center text-cobalt/75">
+            <div class="bg-white/95 p-6 hand-border-sm text-center text-cobalt/75">
                 <p class="font-bold text-sm">Nenhum participante ou garrafa cadastrada ainda.</p>
                 ${isEditor ? `<p class="text-xs mt-1">Cadastre os participantes na aba Ostras ou toque em "+ Cadastrar Garrafa".</p>` : ''}
             </div>
@@ -285,7 +294,7 @@ function renderBottlesList() {
                </span>`;
 
         return `
-            <div class="bg-white/75 p-3.5 hand-border-sm space-y-2.5">
+            <div class="bg-white/95 p-3.5 hand-border-sm space-y-2.5">
                 <div class="flex items-center justify-between gap-2 pb-1.5 border-b border-cobalt/15">
                     <div class="flex items-center gap-2 flex-wrap min-w-0">
                         <h3 class="font-extrabold text-sm sm:text-base text-cobalt truncate">
