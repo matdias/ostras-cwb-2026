@@ -111,21 +111,55 @@
                         class="w-full p-2.5 text-sm bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
                 </div>
                 <div>
-                    <label for="bottle-style-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Estilo</label>
-                    <input type="text" id="bottle-style-input" placeholder="Ex: Wild Ale, RIS, Lambic..."
-                        class="w-full p-2.5 text-sm bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                    <label for="bottle-country-select" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">País</label>
+                    <select id="bottle-country-select" class="w-full p-2.5 text-sm font-semibold bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                        <option value="">Selecione o país...</option>
+                        <option value="🇧🇪">🇧🇪 Bélgica</option>
+                        <option value="🇧🇷">🇧🇷 Brasil</option>
+                        <option value="🇺🇸">🇺🇸 Estados Unidos</option>
+                        <option value="🇩🇪">🇩🇪 Alemanha</option>
+                        <option value="🇬🇧">🇬🇧 Reino Unido</option>
+                        <option value="🇳🇱">🇳🇱 Holanda</option>
+                        <option value="🇩🇰">🇩🇰 Dinamarca</option>
+                        <option value="🇫🇷">🇫🇷 França</option>
+                        <option value="🇮🇹">🇮🇹 Itália</option>
+                        <option value="🇪🇸">🇪🇸 Espanha</option>
+                        <option value="🇵🇹">🇵🇹 Portugal</option>
+                        <option value="🇨🇿">🇨🇿 República Tcheca</option>
+                        <option value="🇦🇹">🇦🇹 Áustria</option>
+                        <option value="🇨🇭">🇨🇭 Suíça</option>
+                        <option value="🇸🇪">🇸🇪 Suécia</option>
+                        <option value="🇳🇴">🇳🇴 Noruega</option>
+                        <option value="🇵🇱">🇵🇱 Polônia</option>
+                        <option value="🇪🇪">🇪🇪 Estônia</option>
+                        <option value="🇨🇦">🇨🇦 Canadá</option>
+                        <option value="🇦🇷">🇦🇷 Argentina</option>
+                        <option value="🇺🇾">🇺🇾 Uruguai</option>
+                        <option value="🇨🇱">🇨🇱 Chile</option>
+                        <option value="🇯🇵">🇯🇵 Japão</option>
+                        <option value="🇳🇿">🇳🇿 Nova Zelândia</option>
+                        <option value="🇦🇺">🇦🇺 Austrália</option>
+                        <option value="🌍">🌍 Outro</option>
+                    </select>
                 </div>
+            </div>
+
+            <div>
+                <label for="bottle-style-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Estilo</label>
+                <input type="text" id="bottle-style-input" placeholder="Ex: Wild Ale, RIS, Lambic, Gueuze..."
+                    class="w-full p-2.5 text-sm bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
             </div>
 
             <div class="grid grid-cols-2 gap-2.5">
                 <div>
                     <label for="bottle-volume-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Volume</label>
                     <select id="bottle-volume-input" class="w-full p-2.5 text-sm font-bold bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                        <option value="750ml" selected>750ml</option>
                         <option value="1500ml">1500ml (Magnum)</option>
-                        <option value="750ml">750ml</option>
                         <option value="500ml">500ml</option>
                         <option value="375ml">375ml</option>
                         <option value="473ml">473ml (Lata)</option>
+                        <option value="330ml">330ml</option>
                     </select>
                 </div>
                 <div>
