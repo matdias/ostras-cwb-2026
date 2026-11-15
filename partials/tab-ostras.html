@@ -1,0 +1,105 @@
+<div class="grid grid-cols-3 gap-2 sm:gap-3 items-stretch">
+    <div class="bg-mustardLight/65 p-3 hand-border-sm flex flex-col items-center justify-between text-center min-h-[5.6rem] sm:min-h-[6.4rem]">
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-cobalt/80 leading-tight">Total Ostras</span>
+        <span id="kpi-duzias" class="text-lg sm:text-2xl font-black text-cobalt leading-none my-1">0 dz</span>
+        <span id="kpi-unidades-sub" class="text-[10px] sm:text-[11px] font-semibold text-cobalt/80 leading-tight">0 unidades</span>
+    </div>
+
+    <div class="bg-white/95 p-3 hand-border-sm flex flex-col items-center justify-between text-center min-h-[5.6rem] sm:min-h-[6.4rem]">
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-cobalt/80 leading-tight">Comem Ceviche</span>
+        <span id="kpi-ceviche-count" class="text-lg sm:text-2xl font-black text-cobalt leading-none my-1">0 pessoas</span>
+        <span id="kpi-ceviche-share" class="text-[10px] sm:text-[11px] font-semibold text-cobalt/80 leading-tight">R$ 0,00 / pessoa</span>
+    </div>
+
+    <div class="bg-white/95 p-3 hand-border-sm flex flex-col items-center justify-between text-center min-h-[5.6rem] sm:min-h-[6.4rem]">
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-cobalt/80 leading-tight">Total Evento</span>
+        <span id="kpi-custo-total" class="text-base sm:text-2xl font-black text-emerald-700 leading-none my-1">R$ 0,00</span>
+        <span id="kpi-pediram" class="text-[10px] sm:text-[11px] font-semibold text-cobalt/80 leading-tight">0 de 0 c/ ostras</span>
+    </div>
+</div>
+
+<!-- Barra de Ação: Adicionar Rápido + Busca + Filtros -->
+<div class="bg-white/95 p-3 hand-border-sm space-y-2.5 w-full box-border overflow-hidden">
+    <form id="quick-add-form" onsubmit="quickAddPerson(event)" class="edit-only flex flex-col sm:flex-row gap-2 w-full">
+        <input type="text" id="quick-name-input" required placeholder="Nome do participante..."
+            class="w-full sm:flex-1 h-10 px-3 bg-paper text-cobalt placeholder-cobalt/45 text-sm font-semibold rounded-xl border border-cobalt/35 focus:outline-none focus:border-cobalt box-border">
+        
+        <div class="grid grid-cols-3 sm:flex gap-1.5 sm:gap-2 items-center w-full sm:w-auto">
+            <select id="quick-dozens-select" aria-label="Quantidade de dúzias"
+                class="w-full sm:w-auto h-10 px-1.5 sm:px-2.5 bg-paper text-cobalt text-xs sm:text-sm font-extrabold rounded-xl border border-cobalt/35 focus:outline-none focus:border-cobalt text-center sm:text-left">
+                <option value="0">0 dz</option>
+                <option value="0.5">½ dz (6)</option>
+                <option value="1" selected>1 dz (12)</option>
+                <option value="1.5">1½ dz (18)</option>
+                <option value="2">2 dz (24)</option>
+                <option value="2.5">2½ dz (30)</option>
+                <option value="3">3 dz (36)</option>
+                <option value="3.5">3½ dz (42)</option>
+                <option value="4">4 dz (48)</option>
+            </select>
+
+            <label class="w-full sm:w-auto h-10 flex items-center justify-center gap-1 sm:gap-1.5 bg-paper px-1.5 sm:px-2.5 rounded-xl border border-cobalt/35 text-xs font-extrabold text-cobalt cursor-pointer select-none whitespace-nowrap" title="Participa do rateio do Ceviche">
+                <input type="checkbox" id="quick-ceviche-check" class="w-4 h-4 accent-cobalt rounded shrink-0">
+                <span>🐟 Ceviche</span>
+            </label>
+
+            <button type="submit"
+                class="w-full sm:w-auto h-10 bg-cobalt hover:bg-cobaltDark active:scale-[0.99] text-paper font-bold text-xs sm:text-sm px-2 sm:px-3.5 rounded-xl shadow-2xs flex items-center justify-center gap-1 transition cursor-pointer whitespace-nowrap">
+                <span class="text-base leading-none">+</span>
+                <span>Adicionar</span>
+            </button>
+        </div>
+    </form>
+
+    <!-- Busca e Filtros -->
+    <div id="search-filter-wrapper" class="flex flex-col gap-2 pt-2 border-t border-cobalt/10 w-full">
+        <div class="relative w-full">
+            <input type="text" id="search-input" placeholder="Buscar por nome ou observação..."
+                oninput="renderOystersList()"
+                class="w-full h-10 pl-8 pr-8 bg-paper text-cobalt placeholder-cobalt/45 text-xs sm:text-sm font-medium rounded-xl border border-cobalt/25 focus:outline-none focus:border-cobalt box-border">
+            <svg class="w-4 h-4 text-cobalt/50 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-cobalt/60 hover:text-cobalt font-bold text-xs cursor-pointer">✕</button>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 w-full" role="group" aria-label="Filtrar participantes">
+            <button onclick="setFilter('all')" id="filter-all"
+                class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-cobalt text-paper border border-cobalt transition cursor-pointer inline-flex items-center justify-center">
+                Todos (<span id="count-all">0</span>)
+            </button>
+            <button onclick="setFilter('with_order')" id="filter-with_order"
+                class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer inline-flex items-center justify-center">
+                🦪 Com ostras (<span id="count-with_order">0</span>)
+            </button>
+            <button onclick="setFilter('with_ceviche')" id="filter-with_ceviche"
+                class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer inline-flex items-center justify-center">
+                🐟 Com ceviche (<span id="count-with_ceviche">0</span>)
+            </button>
+            <button onclick="setFilter('pending_pay')" id="filter-pending_pay"
+                class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer inline-flex items-center justify-center">
+                ⏳ Pendente (<span id="count-pending_pay">0</span>)
+            </button>
+            <button onclick="setFilter('paid')" id="filter-paid"
+                class="filter-pill px-2.5 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap bg-white text-cobalt border border-cobalt/35 hover:border-cobalt transition cursor-pointer inline-flex items-center justify-center">
+                ✅ Pagos (<span id="count-paid">0</span>)
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Lista de Participantes -->
+<div id="oysters-list" class="space-y-3"></div>
+
+<!-- Botões Inferiores -->
+<div class="mt-6 pt-4 border-t-2 border-dashed border-cobalt/20 flex flex-col sm:flex-row gap-2">
+    <button onclick="copyWhatsAppSummary()"
+        class="flex-1 bg-emerald-600/90 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-2xs flex items-center justify-center gap-2 transition cursor-pointer">
+        <span>📋</span> Copiar Resumo WhatsApp
+    </button>
+
+    <button onclick="syncFromSheets(true)"
+        class="bg-mustard hover:bg-amber-300 text-cobalt font-extrabold text-xs sm:text-sm py-3 px-4 rounded-xl border border-cobalt shadow-2xs flex items-center justify-center gap-1.5 transition cursor-pointer">
+        <span>🔄</span> Sincronizar Agora
+    </button>
+</div>
