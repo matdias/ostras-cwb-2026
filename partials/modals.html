@@ -1,0 +1,184 @@
+<!-- MODAL: DESBLOQUEAR MODO EDIÇÃO -->
+<div id="upgrade-edit-modal" class="fixed inset-0 bg-cobalt/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-paper w-full max-w-sm p-5 hand-border shadow-2xl space-y-4">
+        <div class="flex justify-between items-center border-b border-cobalt/15 pb-2.5">
+            <h3 class="font-extrabold text-base text-cobalt">🔓 Liberar Modo Edição</h3>
+            <button onclick="closeUpgradeEditModal()" class="w-8 h-8 rounded-full bg-cobalt/10 text-cobalt font-bold hover:bg-cobalt/20 cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="handleUpgradeEditSubmit(event)" class="space-y-3">
+            <p class="text-xs text-cobalt/80">Digite a senha de organizador para habilitar alterações na lista, bottle share e rateio:</p>
+            <input type="password" id="upgrade-pin-input" required autocomplete="off" placeholder="Senha de edição..."
+                class="w-full py-2.5 px-3 text-center text-sm font-extrabold tracking-widest uppercase bg-white text-cobalt rounded-xl border-2 border-cobalt/40 focus:border-cobalt focus:outline-none">
+            <p id="upgrade-pin-error" class="hidden text-xs font-extrabold text-red-600 text-center"></p>
+            <div class="flex gap-2">
+                <button type="button" onclick="closeUpgradeEditModal()" class="flex-1 py-2 rounded-xl border border-cobalt/40 text-xs font-bold text-cobalt cursor-pointer">Cancelar</button>
+                <button type="submit" id="upgrade-submit-btn" class="flex-1 py-2 rounded-xl bg-cobalt text-paper text-xs font-extrabold hover:bg-cobaltDark cursor-pointer">Desbloquear</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: EDITAR PARTICIPANTE -->
+<div id="person-modal" class="fixed inset-0 bg-cobalt/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-paper w-full max-w-md p-5 hand-border shadow-2xl space-y-4">
+        <div class="flex justify-between items-center border-b border-cobalt/15 pb-2.5">
+            <h3 id="modal-title" class="font-extrabold text-lg text-cobalt">Editar Participante</h3>
+            <button onclick="closePersonModal()" class="w-8 h-8 rounded-full bg-cobalt/10 text-cobalt font-bold hover:bg-cobalt/20 cursor-pointer">✕</button>
+        </div>
+
+        <form id="person-form" onsubmit="savePersonFromModal(event)" class="space-y-3.5">
+            <input type="hidden" id="edit-person-id">
+            
+            <div>
+                <label for="person-name-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Nome da Pessoa</label>
+                <input type="text" id="person-name-input" required placeholder="Ex: João da Silva"
+                    class="w-full p-3 text-sm font-semibold bg-white rounded-xl border-2 border-cobalt/40 focus:border-cobalt focus:outline-none">
+            </div>
+
+            <div>
+                <label class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Quantidade de Ostras (em Dúzias)</label>
+                <div class="grid grid-cols-4 gap-1.5 mb-2">
+                    <button type="button" onclick="setModalDozens(0)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight cursor-pointer">0 dz</button>
+                    <button type="button" onclick="setModalDozens(0.5)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight cursor-pointer">½ dz</button>
+                    <button type="button" onclick="setModalDozens(1)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight cursor-pointer">1 dz</button>
+                    <button type="button" onclick="setModalDozens(1.5)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight cursor-pointer">1½ dz</button>
+                    <button type="button" onclick="setModalDozens(2)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight cursor-pointer">2 dz</button>
+                    <button type="button" onclick="setModalDozens(2.5)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight cursor-pointer">2½ dz</button>
+                    <button type="button" onclick="setModalDozens(3)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight cursor-pointer">3 dz</button>
+                    <button type="button" onclick="setModalDozens(3.5)" class="py-1.5 text-xs font-bold bg-white border border-cobalt/40 rounded-lg hover:bg-mustardLight cursor-pointer">3½ dz</button>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="number" id="person-dozens-input" min="0" step="0.5" value="1" required
+                        oninput="updateModalUnitsPreview()"
+                        class="w-full p-2.5 text-base font-black text-center bg-white rounded-xl border-2 border-cobalt/40 focus:border-cobalt focus:outline-none">
+                    <span id="modal-units-preview" class="text-xs font-extrabold text-cobalt/80 whitespace-nowrap">= 1 dz (12 un)</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="person-note-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Observação (opcional)</label>
+                <input type="text" id="person-note-input" placeholder="Ex: Vai levar limão, chega às 20h..."
+                    class="w-full p-2.5 text-sm bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-cobalt/30 cursor-pointer">
+                    <input type="checkbox" id="person-ceviche-input" class="w-5 h-5 accent-cobalt rounded">
+                    <span class="text-sm font-bold text-cobalt">🐟 Come Ceviche</span>
+                </label>
+
+                <label class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-cobalt/30 cursor-pointer">
+                    <input type="checkbox" id="person-paid-input" class="w-5 h-5 accent-cobalt rounded">
+                    <span class="text-sm font-bold text-cobalt">✅ Já está pago</span>
+                </label>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="closePersonModal()"
+                    class="flex-1 py-2.5 px-4 rounded-xl border border-cobalt/40 text-cobalt font-bold text-sm hover:bg-cobalt/5 cursor-pointer">
+                    Cancelar
+                </button>
+                <button type="submit"
+                    class="flex-1 py-2.5 px-4 rounded-xl bg-cobalt text-paper font-bold text-sm hover:bg-cobaltDark shadow-2xs cursor-pointer">
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: ADICIONAR / EDITAR GARRAFA (BOTTLE SHARE) -->
+<div id="bottle-modal" class="fixed inset-0 bg-cobalt/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-paper w-full max-w-md p-5 hand-border shadow-2xl space-y-4">
+        <div class="flex justify-between items-center border-b border-cobalt/15 pb-2.5">
+            <h3 id="bottle-modal-title" class="font-extrabold text-lg text-cobalt">Cadastrar Garrafa</h3>
+            <button onclick="closeBottleModal()" class="w-8 h-8 rounded-full bg-cobalt/10 text-cobalt font-bold hover:bg-cobalt/20 cursor-pointer">✕</button>
+        </div>
+
+        <form id="bottle-form" onsubmit="saveBottleFromModal(event)" class="space-y-3">
+            <input type="hidden" id="edit-bottle-id">
+
+            <div>
+                <label for="bottle-beer-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Cerveja / Rótulo</label>
+                <input type="text" id="bottle-beer-input" required placeholder="Ex: Gueuze Tilquin / Fou' Foune..."
+                    class="w-full p-2.5 text-sm font-semibold bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                    <label for="bottle-brewery-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Cervejaria</label>
+                    <input type="text" id="bottle-brewery-input" placeholder="Ex: Cantillon, Dogma..."
+                        class="w-full p-2.5 text-sm bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                </div>
+                <div>
+                    <label for="bottle-style-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Estilo</label>
+                    <input type="text" id="bottle-style-input" placeholder="Ex: Wild Ale, RIS, Lambic..."
+                        class="w-full p-2.5 text-sm bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                    <label for="bottle-volume-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Volume</label>
+                    <select id="bottle-volume-input" class="w-full p-2.5 text-sm font-bold bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                        <option value="1500ml">1500ml (Magnum)</option>
+                        <option value="750ml">750ml</option>
+                        <option value="500ml">500ml</option>
+                        <option value="375ml">375ml</option>
+                        <option value="473ml">473ml (Lata)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="bottle-owner-select" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Responsável</label>
+                    <select id="bottle-owner-select" onchange="handleBottleOwnerSelectChange()" required
+                        class="w-full p-2.5 text-sm font-semibold bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+                    </select>
+                </div>
+            </div>
+
+            <div id="bottle-custom-owner-wrapper" class="hidden">
+                <label for="bottle-custom-owner-input" class="block text-xs font-extrabold uppercase text-cobalt/80 mb-1">Nome do Responsável (Convidado Extra)</label>
+                <input type="text" id="bottle-custom-owner-input" placeholder="Digite o nome de quem vai levar..."
+                    class="w-full p-2.5 text-sm font-semibold bg-white rounded-xl border border-cobalt/40 focus:border-cobalt focus:outline-none">
+            </div>
+
+            <label class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-cobalt/30 cursor-pointer">
+                <input type="checkbox" id="bottle-photo-input" class="w-5 h-5 accent-cobalt rounded">
+                <span class="text-sm font-bold text-cobalt">📸 Foto da garrafa já enviada</span>
+            </label>
+
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="closeBottleModal()"
+                    class="flex-1 py-2.5 px-4 rounded-xl border border-cobalt/40 text-cobalt font-bold text-sm hover:bg-cobalt/5 cursor-pointer">
+                    Cancelar
+                </button>
+                <button type="submit"
+                    class="flex-1 py-2.5 px-4 rounded-xl bg-cobalt text-paper font-bold text-sm hover:bg-cobaltDark shadow-2xs cursor-pointer">
+                    Salvar Garrafa
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO CUSTOMIZADO -->
+<div id="confirm-modal" class="fixed inset-0 bg-cobalt/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-paper w-full max-w-sm p-5 hand-border shadow-2xl space-y-4 text-center">
+        <h3 id="confirm-title" class="font-extrabold text-lg text-cobalt">Confirmar ação</h3>
+        <p id="confirm-message" class="text-sm text-cobalt/85">Tem certeza?</p>
+        <div class="flex gap-2 pt-1">
+            <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl border border-cobalt/40 font-bold text-sm text-cobalt cursor-pointer">
+                Cancelar
+            </button>
+            <button id="confirm-yes-btn" class="flex-1 py-2.5 rounded-xl bg-red-600/90 text-white font-bold text-sm hover:bg-red-700 cursor-pointer">
+                Confirmar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast de Notificação -->
+<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-cobalt text-paper px-4 py-2.5 rounded-full shadow-xl text-xs sm:text-sm font-bold hidden items-center gap-2 z-50 border-2 border-mustard whitespace-nowrap">
+    <span id="toast-icon">✅</span>
+    <span id="toast-msg">Ação concluída!</span>
+</div>
