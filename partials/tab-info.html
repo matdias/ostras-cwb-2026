@@ -1,0 +1,137 @@
+<div class="bg-white/95 p-4 hand-border space-y-3">
+    <h2 class="font-extrabold text-base text-cobalt flex items-center gap-2">
+        <span>📍</span> Detalhes do Encontro
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+        <div class="bg-paper p-3 rounded-xl border border-cobalt/20 text-center sm:text-left">
+            <span class="block text-[10px] font-extrabold uppercase tracking-wider text-cobalt/65">Data &amp; Horário</span>
+            <span class="font-bold text-cobalt">19 de Novembro &bull; a partir das 19h00</span>
+        </div>
+        <div class="bg-paper p-3 rounded-xl border border-cobalt/20 text-center sm:text-left">
+            <span class="block text-[10px] font-extrabold uppercase tracking-wider text-cobalt/65">Endereço</span>
+            <span class="font-bold text-cobalt">R. Camões, 476 - Hugo Lange</span>
+        </div>
+    </div>
+    <div class="flex flex-wrap gap-2 pt-1">
+        <a href="https://maps.google.com/?q=R.+Camões,+476+-+Hugo+Lange,+Curitiba" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 bg-cobalt text-paper text-xs font-bold py-2 px-3.5 rounded-xl hover:bg-cobaltDark transition">
+            <span>🗺️</span> Abrir no Google Maps
+        </a>
+        <button onclick="copyEventInvite()"
+            class="inline-flex items-center gap-1.5 bg-mustard text-cobalt text-xs font-extrabold py-2 px-3.5 rounded-xl border border-cobalt hover:bg-amber-300 transition cursor-pointer">
+            <span>📤</span> Copiar Convite p/ WhatsApp
+        </button>
+    </div>
+</div>
+
+<!-- Configuração de Valores -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div class="bg-white/95 p-4 hand-border flex flex-col justify-between gap-3">
+        <div>
+            <h2 class="font-extrabold text-sm sm:text-base text-cobalt flex items-center gap-1.5">
+                <span>🦪</span> Preço da Dúzia de Ostras
+            </h2>
+            <p class="text-xs text-cobalt/75 mt-1">
+                Cobrado proporcionalmente às dúzias pedidas por cada pessoa.
+            </p>
+        </div>
+        <div class="flex items-center justify-between bg-mustardLight/60 px-3 py-2 rounded-xl border border-cobalt/35">
+            <span class="text-xs font-extrabold text-cobalt">Valor / dz:</span>
+            <div class="edit-only flex items-center gap-1.5">
+                <span class="text-sm font-black text-cobalt">R$</span>
+                <input type="number" id="input-preco-duzia" min="0" step="0.50" value="30"
+                    onchange="updatePricePerDozen(this.value)" oninput="updatePricePerDozen(this.value)"
+                    class="w-20 text-center font-black text-base text-cobalt bg-white border border-cobalt/40 rounded-lg py-1 focus:outline-none focus:border-cobalt">
+            </div>
+            <span id="readonly-preco-duzia" class="view-only hidden text-base font-black text-cobalt">R$ 30,00</span>
+        </div>
+    </div>
+
+    <div class="bg-white/95 p-4 hand-border flex flex-col justify-between gap-3">
+        <div>
+            <h2 class="font-extrabold text-sm sm:text-base text-cobalt flex items-center gap-1.5">
+                <span>🐟</span> Gasto Total do Ceviche
+            </h2>
+            <p class="text-xs text-cobalt/75 mt-1">
+                Dividido igualmente entre os <strong id="info-ceviche-eaters">0</strong> marcados com Ceviche (<strong id="info-ceviche-per-person">R$ 0,00</strong>/pessoa).
+            </p>
+        </div>
+        <div class="flex items-center justify-between bg-cobaltSoft/70 px-3 py-2 rounded-xl border border-cobalt/35">
+            <span class="text-xs font-extrabold text-cobalt">Total Ceviche:</span>
+            <div class="edit-only flex items-center gap-1.5">
+                <span class="text-sm font-black text-cobalt">R$</span>
+                <input type="number" id="input-gasto-ceviche" min="0" step="1" value="0"
+                    onchange="updateCevicheTotalCost(this.value)" oninput="updateCevicheTotalCost(this.value)"
+                    class="w-20 text-center font-black text-base text-cobalt bg-white border border-cobalt/40 rounded-lg py-1 focus:outline-none focus:border-cobalt">
+            </div>
+            <span id="readonly-gasto-ceviche" class="view-only hidden text-base font-black text-cobalt">R$ 0,00</span>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white/95 p-4 hand-border space-y-3">
+    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-cobalt/15 pb-2.5">
+        <div>
+            <h2 class="font-extrabold text-base text-cobalt flex items-center gap-2">
+                <span>🧾</span> Fechamento Financeiro (Ostras + Ceviche)
+            </h2>
+            <p class="text-xs text-cobalt/75">
+                Ostras: <strong id="info-preco-dz">R$ 30,00</strong>/dz &bull; Ceviche: <strong id="info-ceviche-cota">R$ 0,00</strong>/pessoa
+            </p>
+        </div>
+        <div class="text-right">
+            <span class="block text-[10px] font-bold uppercase text-cobalt/65">Arrecadado / Total Geral</span>
+            <span id="info-arrecadado" class="text-sm font-black text-emerald-700">R$ 0,00 / R$ 0,00</span>
+        </div>
+    </div>
+
+    <div class="w-full bg-paperDark rounded-full h-2.5 overflow-hidden border border-cobalt/20">
+        <div id="payment-progress-bar" class="bg-emerald-600/85 h-full transition-all duration-300" style="width: 0%"></div>
+    </div>
+
+    <div id="finance-summary-list" class="divide-y divide-cobalt/10"></div>
+</div>
+
+<!-- Configurações Avançadas & Sessão -->
+<details class="bg-white/95 p-4 hand-border group">
+    <summary class="font-extrabold text-sm text-cobalt cursor-pointer flex items-center justify-between list-none">
+        <span class="flex items-center gap-2">
+            <span>⚙️</span> Sessão &amp; Configurações
+        </span>
+        <span class="text-xs font-bold text-cobalt/60 group-open:rotate-180 transition-transform">▼</span>
+    </summary>
+
+    <div class="mt-3 pt-3 border-t border-cobalt/15 space-y-3">
+        <div class="edit-only space-y-2">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-cobalt/80">Endpoint Google Apps Script:</span>
+                <span id="config-sync-badge" class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                    Conectado
+                </span>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2">
+                <input type="url" id="sheets-url-input" placeholder="https://script.google.com/macros/s/.../exec"
+                    class="flex-1 p-2 text-xs font-mono bg-paper rounded-xl border border-cobalt/40 focus:outline-none focus:border-cobalt">
+                <button onclick="saveSheetsUrlFromInput()"
+                    class="bg-cobalt hover:bg-cobaltDark text-paper font-bold text-xs py-2 px-3.5 rounded-xl transition cursor-pointer whitespace-nowrap">
+                    Salvar URL
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="openUpgradeEditModal()" id="settings-upgrade-btn"
+                class="view-only hidden bg-cobalt hover:bg-cobaltDark text-paper font-bold text-xs py-2 px-3 rounded-xl cursor-pointer">
+                🔓 Entrar com Senha de Edição
+            </button>
+            <button onclick="resetCustomUrlToDefault()"
+                class="edit-only bg-paperDark hover:bg-mustardLight text-cobalt font-bold text-xs py-2 px-3 rounded-xl border border-cobalt/30 cursor-pointer">
+                Restaurar URL Padrão
+            </button>
+            <button onclick="logoutPin()"
+                class="bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs py-2 px-3 rounded-xl border border-red-300 cursor-pointer">
+                🔒 Bloquear Tela / Trocar Senha
+            </button>
+        </div>
+    </div>
+</details>
